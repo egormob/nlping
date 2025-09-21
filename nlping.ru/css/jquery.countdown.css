@@ -1,0 +1,9 @@
+.desc div {
+	float: left;
+	font-family: Arial;
+	width: 67px;
+	margin: 3px 65px 0 3px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #000;
+}
