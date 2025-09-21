@@ -1,0 +1,1 @@
+!function(a){a(document).ready(function(){a("[data-fade]").each(function(){var b,c=a(this);setTimeout(function(){b=c.attr("style"),b=b||"",b=b.replace(/display:\s?none;?/gi,""),c.attr("style",b),c.css({opacity:0}),c.animate({opacity:1})},1e3*parseInt(c.attr("data-fade"),10))})})}(opjq);

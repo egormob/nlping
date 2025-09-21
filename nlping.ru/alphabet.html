@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0037)http://www.syncat.com.ua/aphabet.html -->
+<HTML xmlns="http://www.w3.org/1999/xhtml">
+<!-- Mirrored from nlping.ru/alphabet.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 05 Sep 2025 14:10:55 GMT -->
+<HEAD><TITLE>Алфавит</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1251">
+<STYLE type=text/css>HTML {
+	BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Times; BACKGROUND-COLOR: #fafafa; BORDER-RIGHT-WIDTH: 0px
+}
+BODY {
+	BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; FONT-FAMILY: Times; BACKGROUND-COLOR: #fafafa; BORDER-RIGHT-WIDTH: 0px
+}
+#settings {
+	BORDER-RIGHT: #b2aea0 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #b2aea0 1px solid; PADDING-LEFT: 5px; PADDING-BOTTOM: 5px; VERTICAL-ALIGN: top; BORDER-LEFT: #b2aea0 1px solid; PADDING-TOP: 5px; BORDER-BOTTOM: #b2aea0 1px solid; BACKGROUND-COLOR: #ece9d8; TEXT-ALIGN: center
+}
+#workGround {
+	FONT-WEIGHT: bold; FONT-SIZE: 90pt; WIDTH: 300px; POSITION: absolute
+}
+#workGround DIV {
+	TEXT-ALIGN: center
+}
+</STYLE>
+
+<SCRIPT type=text/javascript>
+
+var LEFT = 'Л';
+var RIGHT = 'П';
+var BOTH = 'О';
+
+var alphabet = [
+	'A', 'Б', 'В', 'Г', 'Д', 'Е', 'Ж', 'З', 'И',
+	'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т',
+	'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Э', 'Ю', 'Я'
+];
+
+function generateContinium ()
+{
+	var l = alphabet.length;
+	var coeffs = new Array(l);
+	var letterIndeces = new Array(l);
+	
+	for (var i = 0; i < l; i++)
+		letterIndeces[i] = i;
+
+	for (var i = 0; i < l; i++)
+		coeffs[i] = Math.random();
+
+	for (var i = l - 1; i > 1; i--)
+		for (var j = 0; j < i; j++)
+			if (coeffs[j] > coeffs[j + 1])
+			{
+				function swap(a, i1, i2) {
+					var t = a[i1]; a[i1] = a[i2]; a[i2] = t;
+				}
+				swap(coeffs, j, j + 1);
+				swap(letterIndeces, j, j + 1);
+			}
+	
+	var letters = [l];
+
+	for (var i = 0; i < l; i++)
+		letters[i] = alphabet[letterIndeces[i]];
+	
+	var moves = new Array(l);
+	
+	loop1 : for (var i = 0; i < l; i++)
+	{
+		switch (letters[i])
+		{
+			case BOTH: moves[i] = BOTH; continue loop1;
+			case LEFT: moves[i] = RIGHT; continue loop1;
+			case RIGHT: moves[i] = LEFT; continue loop1;
+		}
+	}
+	
+	var counts = {};
+	counts[LEFT] = 0;
+	counts[RIGHT] = 0;
+	counts[BOTH] = 0;
+	
+	for (var i = 0; i < l; i++)
+	{
+		if (moves[i])
+			continue;
+			
+		var randMove = function () {
+			var rand = Math.random();
+			if (rand < 0.333) return LEFT;
+			else if (rand < 0.666) return BOTH;
+			else return RIGHT;
+		}
+
+		var cand = randMove();
+		
+		if (moves[i - 1] == cand
+			&& (moves[i + 1] == cand
+			|| moves[i - 2] == cand))
+		{
+			switch (cand)
+			{
+			case BOTH: cand = (counts[LEFT] > counts[RIGHT]) ? RIGHT : LEFT; break;
+			case LEFT: cand = (counts[RIGHT] > counts[BOTH]) ? BOTH : RIGHT; break;
+			case RIGHT:cand = (counts[BOTH] > counts[LEFT]) ? LEFT : BOTH; break;
+			}
+		}
+		counts[cand] = counts[cand] + 1;
+		moves[i] = cand;			
+	}
+	
+	return [letters, moves];
+}
+
+var continuum;
+var sarge = 24;
+var delay = 1000;
+
+function nextLetter ()
+{
+	if (sarge == 24)
+	{	
+		continuum = generateContinium();
+		sarge = 0;
+	}
+	var wg = document.getElementById('workGround');
+	wg.style.visibility = 'hidden';
+	wg.style.left = Math.ceil(Math.random() * (document.documentElement.clientWidth - 300)) + 'px';
+	wg.style.top = Math.ceil(Math.random() * (document.documentElement.clientHeight - 400)) + 40 + 'px';
+	document.getElementById('voiceLetter').innerHTML = continuum[0][sarge] + '';
+	document.getElementById('moveLetter').innerHTML = continuum[1][sarge] + '';
+	wg.style.visibility = 'visible';
+
+	sarge++;
+	
+	setTimeout(nextLetter, delay);
+}
+
+function setDelay()
+{
+	var inp = document.getElementById('delayInput');
+	var n = Number(inp.value);
+	if (isNaN(n) || n < 1 || n > 5000)
+		inp.value = delay;
+	else delay = n;
+}
+
+window.onload = nextLetter;
+
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.2995" name=GENERATOR></HEAD>
+<BODY>
+<DIV id=settings><INPUT id=delayInput maxLength=4 size=4 value=1000><BUTTON 
+onclick=setDelay()>интервал (мсек)</BUTTON> </DIV>
+<DIV id=workGround>
+<DIV id=voiceLetter></DIV>
+<DIV id=moveLetter></DIV></DIV></BODY>
+<!-- Mirrored from nlping.ru/alphabet.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 05 Sep 2025 14:10:55 GMT -->
+</HTML>

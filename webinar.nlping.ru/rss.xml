@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://webinar.nlping.ru"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Класс вебинаров</title>
+ <link>http://webinar.nlping.ru</link>
+ <description>
+</description>
+ <language>ru</language>
+<item>
+ <title>Группы</title>
+ <link>http://webinar.nlping.ru/node/26</link>
+ <description>&lt;p&gt;В группах размещаются материалы для участников тренингов и владельцев специальных пакетов.&lt;br /&gt;
+&lt;a href=&quot;http://nlping.ru/p/?id=showcase&quot;&gt;Подробнее о наших продуктах&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://webinar.nlping.ru/node/26&quot; target=&quot;_blank&quot;&gt;подробнее&lt;/a&gt;&lt;/p&gt;</description>
+ <comments>http://webinar.nlping.ru/node/26#comments</comments>
+ <pubDate>Wed, 20 Jan 2010 19:07:17 +0000</pubDate>
+ <dc:creator>admin</dc:creator>
+ <guid isPermaLink="false">26 at http://webinar.nlping.ru</guid>
+</item>
+<item>
+ <title>Добро пожаловать в класс вебинаров nlping.ru!</title>
+ <link>http://webinar.nlping.ru/node/25</link>
+ <description>&lt;p&gt;Зарегистрируйтесь, чтобы войти на сайт.&lt;/p&gt;
+</description>
+ <pubDate>Wed, 20 Jan 2010 18:24:24 +0000</pubDate>
+ <dc:creator>admin</dc:creator>
+ <guid isPermaLink="false">25 at http://webinar.nlping.ru</guid>
+</item>
+</channel>
+</rss>

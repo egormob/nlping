@@ -1,0 +1,15 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+nlping.ru	TRUE	/	FALSE	1999999999	PHPSESSID	fi07c3o6bs99tsdp903rhsi9j3
+.getresponse.com	TRUE	/	FALSE	1999999999	core	jmrlrto8utjgdj3823s2p4tmih
+app.getresponse.com	TRUE	/	FALSE	1999999999	SameSite	lax
+.yandex.ru	TRUE	/	FALSE	1999999999	bh	YMq468UGah7cyuH/CJLYobEDn8/h6gP7+vDnDev//fYPtsbMhwg=
+mc.yandex.ru	TRUE	/	FALSE	1999999999	SameSite	None
+.vk.com	TRUE	/	FALSE	1999999999	remixir	DELETED
+.vk.com	TRUE	/	FALSE	1999999999	remixlang	3
+.vk.com	TRUE	/	FALSE	1999999999	remixstlid	9104381747116435994_EvXZvFy242qmYA6ltZfsf2ZTLQk0mAfvOZxu4zinme0
+vk.com	TRUE	/	FALSE	1999999999	SameSite	None
+getresponse.com	TRUE	/	FALSE	1999999999	timeout	logout_43200
+nlping.ru	TRUE	/	FALSE	1999999999	money_levelup_bonus_start1	1757080931
+.webinar.nlping.ru	TRUE	/	FALSE	1999999999	SESS4deb3cf7a27cf73d8f9d360f8a8bb5c8	dr5460oeq99g38vhu5bvr7ml94
+

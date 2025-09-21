@@ -1,0 +1,46 @@
+* { background: #fff; color:#000; }
+
+body {
+	width:100% !important;
+	margin:0 !important;
+	padding:0 !important;
+	line-height: 1.4;
+	word-spacing:1.1pt;
+	letter-spacing:0.2pt;
+	font-family: Georgia,  Garamond,"Times New Roman", Times, serif;
+	color: #000;
+	background: none;
+	font-size: 12pt;
+}
+
+/*Headings */
+.content h1, .content h2, .content h3, .content h4, .content h5, .content h6 { font-family: Arial, Helvetica, sans-serif; }
+.content h1{font-size:19pt;}
+.content h2{font-size:17pt;}
+.content h3{font-size:15pt;}
+.content h4, .content h5 .content ,h6{font-size:12pt;}
+
+.content code { font: 10pt Courier, monospace; } 
+.content blockquote { margin: 1.3em; padding: 1em;  font-size: 10pt;  font-style: italic; }
+.content hr { background-color: #ccc; }
+
+/* Images */
+.content a img { border: none; }
+
+/* code */
+.content code, pre { color:#000}
+
+/* Links */
+.content a:link, a:visited { background: transparent; font-weight: 700; text-decoration: underline; color:#333; }
+/* .content a:link[href^="http://"]:after, a[href^="http://"]:visited:after { content: " (" attr(href) ") "; font-size: 90%; } */
+.content a[href^="http://"] {color:#000; }
+
+/* Table */
+.content table { margin: 1px; text-align:left; border-top: 1px solid #333; border-left:none; }
+.content th, td { border-bottom: 1px solid #333; border-right: none; }
+.content th {  font-weight: bold; }
+.content th,td { padding: 0.8em; }
+.content tfoot { font-style: italic; }
+.content caption { background: #fff; margin-bottom:2em; text-align:left; }
+.content thead {display: table-header-group;}
+.content tr {page-break-inside: avoid;}
