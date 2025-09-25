@@ -1,0 +1,10 @@
+baseline_snapshot.tar*
+
+# Generated baseline artifacts (kept out of git to avoid huge diffs)
+baseline_md5.txt
+snapshot/*
+!snapshot/.gitkeep
+
+# Generated reports
+logs/
+artifacts/
