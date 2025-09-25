@@ -2,6 +2,8 @@
 
 Этот файл поддерживает дорожную карту `DOROZHNAYA_KARTA.md`. Следуй шагам по порядку, фиксируя результаты после каждой подпартии.
 
+> Быстрый вызов: скажи «Протокол, шаг <код этапа>», чтобы автоматически пройти цепочку Memory → Roadmap → Instruction и перейти к нужному пункту.
+
 ## 1. Базовая подготовка (этап A)
 
 1. **Проверить наличие страхующих артефактов.**
@@ -22,6 +24,8 @@
    - Пример: `python tools/check_links.py --scope nlping.ru/index.html` (лог появится в `logs/check_links-*.json`).
    - Для smoke-теста Pages: `python tools/check_links.py --manifest tools/url_manifest.txt --base https://<project>.pages.dev`.
 3. `tools/check_utf8.py` — по списку URL/файлов проверяет `charset`, отсутствие `�`, совпадение `<title>/<meta>/<h1>` со слепком.
+   - Пример полного прогона: `python tools/check_utf8.py --manifest tools/url_manifest.txt` → `logs/check_utf8-*.json`.
+   - Для точечной проверки партии: `python tools/check_utf8.py --scope <каталог>` (при необходимости добавь `--base http://localhost:8000`).
 4. Каждый скрипт снабдить логом (`logs/*.json`) и инструкцией по запуску.
 
 ## 3. Перенос структуры (этап C)
