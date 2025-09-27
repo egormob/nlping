@@ -41,6 +41,27 @@ HTML_EXTENSIONS = {".html", ".htm", ".xhtml"}
 XML_EXTENSIONS = {".xml", ".rss", ".atom"}
 TEXT_EXTENSIONS = HTML_EXTENSIONS | XML_EXTENSIONS
 
+SUSPECT_TEXT_SEQUENCES = {
+    "Ã",
+    "Ð",
+    "Â",
+    "â€”",
+    "â€“",
+    "â€œ",
+    "â€�",
+    "â€˜",
+    "â€™",
+    "пїЅ",
+    "ï¿½",
+}
+SUSPECT_BYTE_SEQUENCES = {
+    b"\xc3\x90",
+    b"\xc3\x91",
+    b"\xc2\xbb",
+    b"\xc2\xab",
+    b"\xef\xbf\xbd",
+}
+
 
 @dataclass
 class HTTPProbe:
@@ -131,6 +152,21 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Write the report without indentation (useful for large manifests).",
     )
+    parser.add_argument(
+        "--include-remote",
+        action="store_true",
+        help="Include manifest entries for remote hosts (skipped by default).",
+    )
+    parser.add_argument(
+        "--primary-host",
+        type=str,
+        help="Treat this host (and its subdomains) as local when parsing the manifest (default: derived from --root).",
+    )
+    parser.add_argument(
+        "--no-manifest",
+        action="store_true",
+        help="Skip manifest targets even if the default manifest file is present.",
+    )
     return parser
 
 
@@ -167,15 +203,41 @@ def normalize_manifest_path(root: Path, parsed: ParseResult, raw: str) -> Path:
     return candidate
 
 
-def manifest_targets(manifest_path: Path, root: Path) -> List[Tuple[str, Path, Optional[str]]]:
+def host_matches_primary(host: str, primary: Optional[str]) -> bool:
+    if not host or primary is None:
+        return True
+    host_lower = host.lower()
+    primary_lower = primary.lower()
+    return host_lower == primary_lower or host_lower.endswith("." + primary_lower)
+
+
+def derive_primary_host(root: Path) -> Optional[str]:
+    candidate = root.name
+    if "." in candidate:
+        return candidate
+    return None
+
+
+def manifest_targets(
+    manifest_path: Path,
+    root: Path,
+    *,
+    include_remote: bool,
+    primary_host: Optional[str],
+) -> List[Tuple[str, Path, Optional[str]]]:
     targets: List[Tuple[str, Path, Optional[str]]] = []
     if not manifest_path.exists():
         raise FileNotFoundError(f"Manifest file not found: {manifest_path}")
+    skipped_remote = 0
     for idx, line in enumerate(manifest_path.read_text(encoding="utf-8").splitlines(), start=1):
         raw = line.strip()
         if not raw or raw.startswith("#"):
             continue
         parsed = urlparse(raw)
+        if parsed.scheme in {"http", "https"} and not host_matches_primary(parsed.netloc, primary_host):
+            if not include_remote:
+                skipped_remote += 1
+                continue
         candidate = normalize_manifest_path(root, parsed, raw)
         request_path: Optional[str]
         if parsed.scheme in {"http", "https"}:
@@ -188,6 +250,12 @@ def manifest_targets(manifest_path: Path, root: Path) -> List[Tuple[str, Path, O
             request_path = "/" + raw.lstrip("/")
         source = f"manifest:{manifest_path.name}:{idx}"
         targets.append((source, candidate, request_path))
+    if skipped_remote and not include_remote:
+        print(
+            f"Skipped {skipped_remote} remote entr{'y' if skipped_remote == 1 else 'ies'} from {manifest_path.name}; "
+            "pass --include-remote to inspect them.",
+            file=sys.stderr,
+        )
     return targets
 
 
@@ -262,7 +330,7 @@ def detect_declared_charset(text: str) -> Optional[str]:
 
 
 def decode_content(raw: bytes) -> Tuple[str, str]:
-    for encoding in ("cp1251", "utf-8"):
+    for encoding in ("utf-8", "utf-8-sig", "cp1251"):
         try:
             return raw.decode(encoding), encoding
         except UnicodeDecodeError:
@@ -271,11 +339,9 @@ def decode_content(raw: bytes) -> Tuple[str, str]:
 
 
 def detect_suspect_sequences(text: str, raw: bytes) -> bool:
-    if "Ã" in text or "Ð" in text or "пїЅ" in text:
+    if any(sequence in text for sequence in SUSPECT_TEXT_SEQUENCES):
         return True
-    if b"\xef\xbf\xbd" in raw:
-        return True
-    if "ï¿½" in text:
+    if any(sequence in raw for sequence in SUSPECT_BYTE_SEQUENCES):
         return True
     return False
 
@@ -414,7 +480,7 @@ def inspect_document(
     text, detected_encoding = decode_content(raw)
     report.detected_encoding = detected_encoding
     report.declared_charset = detect_declared_charset(text)
-    report.contains_replacement = "�" in text or "ï¿½" in text or b"\xef\xbf\xbd" in raw
+    report.contains_replacement = ("\ufffd" in text) or (b"\xef\xbf\xbd" in raw)
     report.contains_suspect_sequences = detect_suspect_sequences(text, raw)
 
     if base:
@@ -504,7 +570,7 @@ def dump_report(
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     args = parse_args(argv)
-    manifest_path: Optional[Path] = args.manifest
+    manifest_path: Optional[Path] = None if args.no_manifest else args.manifest
     reports: List[DocumentReport] = []
 
     try:
@@ -516,7 +582,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     targets: List[Tuple[str, Path, Optional[str]]] = []
     if manifest_path:
         try:
-            targets.extend(manifest_targets(manifest_path, args.root))
+            primary_host = args.primary_host or derive_primary_host(args.root)
+            targets.extend(
+                manifest_targets(
+                    manifest_path,
+                    args.root,
+                    include_remote=args.include_remote,
+                    primary_host=primary_host,
+                )
+            )
         except FileNotFoundError as exc:
             print(str(exc), file=sys.stderr)
             return 1
