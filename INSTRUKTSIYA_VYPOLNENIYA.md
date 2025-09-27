@@ -2,6 +2,10 @@
 
 Этот файл поддерживает дорожную карту `DOROZHNAYA_KARTA.md`. Следуй шагам по порядку, фиксируя результаты после каждой подпартии.
 
+## Быстрый старт
+
+Каждую новую сессию начинай с команды **«Протокол, шаг <код этапа>»**. После неё ассистент последовательно откроет дорожную карту, эту инструкцию и нужные памятки memory-bank, чтобы продолжить текущий шаг без пропусков.
+
 ## 1. Базовая подготовка (этап A)
 
 1. **Проверить наличие страхующих артефактов.**
@@ -22,7 +26,12 @@
    - Пример: `python tools/check_links.py --scope nlping.ru/index.html` (лог появится в `logs/check_links-*.json`).
    - Для smoke-теста Pages: `python tools/check_links.py --manifest tools/url_manifest.txt --base https://<project>.pages.dev`.
 3. `tools/check_utf8.py` — по списку URL/файлов проверяет `charset`, отсутствие `�`, совпадение `<title>/<meta>/<h1>` со слепком.
+   - Manifest: `python tools/check_utf8.py --manifest tools/url_manifest.txt`.
+   - Локальная партия: `python tools/check_utf8.py --scope nlping.ru/p/01/`.
+   - HTTP-проверка: добавить `--base https://<project>.pages.dev`; внешние домены по умолчанию пропускаются, поэтому подключай `--include-remote` (и при необходимости `--primary-host <домен>`).
+   - Все логи складываются в `logs/check_utf8-*.json`.
 4. Каждый скрипт снабдить логом (`logs/*.json`) и инструкцией по запуску.
+5. После завершения B3 обновить/создать PR `work → main` и довести его до merge, чтобы разгрузить следующие партии.
 
 ## 3. Перенос структуры (этап C)
 
