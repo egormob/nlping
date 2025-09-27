@@ -40,6 +40,7 @@ LOG_DIR = PROJECT_ROOT / "logs"
 HTML_EXTENSIONS = {".html", ".htm", ".xhtml"}
 XML_EXTENSIONS = {".xml", ".rss", ".atom"}
 TEXT_EXTENSIONS = HTML_EXTENSIONS | XML_EXTENSIONS
+
 SUSPECT_TEXT_SEQUENCES = {
     "Ã",
     "Ð",
