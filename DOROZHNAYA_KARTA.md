@@ -190,6 +190,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-28T16:44:44Z | C1 — перенёс блок «Видео» (video/index8d4e/print8d4e) | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T164430Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T164433Z.json`; `python -m http.server` + `curl -I` по `video.html`, `index8d4e.html`, `print8d4e.html` | ✅ Раздел «Видео» работает из корня, продолжаю перенос оставшихся страниц. |
 | 2025-09-28T17:17:45Z | C1 — поднял ассеты раздела «Видео» (css/, js/, images/, img/, favicon.ico) в корень | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T171738Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T171743Z.json` | ✅ Стили, скрипты и изображения раздела доступны из корня, ссылка на hop-интеграцию удалена. |
 | 2025-09-28T17:26:14Z | C1 — перенёс оставшиеся 2127 HTML верхнего уровня из `nlping.ru/` в корень | `python tools/check_links.py --scope .` → `logs/check_links-20250928T172536Z.json`; `python tools/check_utf8.py --scope . --no-manifest` → `logs/check_utf8-20250928T172548Z.json`; `python -m http.server 8000` + `curl -I` по `index.html`, `F48A6.html`, `setup925a.html` | ✅ Каталог `nlping.ru/` очищен от корневых HTML, страницы обслуживаются из нового положения. |
+| 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 ## Текущее состояние дорожной карты
 
@@ -204,11 +205,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C1: перенос корневых HTML завершён — весь верхний уровень переехал в корень, каталог `nlping.ru/` больше не содержит HTML-файлов.
 - ⏳ Остальные шаги (C2–E4) не начаты.
 
-Следующий шаг: C2 — переносить каталоги с ассетами из `nlping.ru/` партиями.
-
-Следующий шаг: C2 — переносить каталоги с ассетами из `nlping.ru/` партиями.
-
-**Следующий шаг:** довести до merge актуальный PR (**ветка задачи → `main`**) и затем перейти к **C2** — переносу каталогов с ассетами.
+**Следующий шаг:** C2 — переносить каталоги ассетов из `nlping.ru/` партиями (последовательно обновляя PR work → main).
 
 ### Быстрый старт сессии
 
