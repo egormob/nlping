@@ -178,8 +178,8 @@ def parse_args(argv: Optional[List[str]] = None) -> argparse.Namespace:
     parser.add_argument(
         "paths",
         nargs="*",
-        default=["nlping.ru"],
-        help="Files or directories to scan (default: nlping.ru)",
+        default=["."],
+        help="Files or directories to scan (default: project root)",
     )
     parser.add_argument(
         "--output",

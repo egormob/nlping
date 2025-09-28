@@ -31,7 +31,7 @@ from list_assets import (  # type: ignore
 )
 
 LOG_DIR = PROJECT_ROOT / "logs"
-DEFAULT_SCOPE = PROJECT_ROOT / "nlping.ru"
+DEFAULT_SCOPE = PROJECT_ROOT
 
 
 @dataclass
@@ -103,7 +103,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--root",
         type=Path,
         default=DEFAULT_SCOPE,
-        help="Root directory used to resolve manifest paths (default: nlping.ru).",
+        help="Root directory used to resolve manifest paths (default: project root).",
     )
     parser.add_argument(
         "--include-remote",

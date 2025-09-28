@@ -35,7 +35,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 TOOLS_ROOT = PROJECT_ROOT / "tools"
 DEFAULT_MANIFEST = TOOLS_ROOT / "url_manifest.txt"
 DEFAULT_BASELINE = PROJECT_ROOT / "snapshot" / "seo_baseline.json.gz"
-DEFAULT_ROOT = PROJECT_ROOT / "nlping.ru"
+DEFAULT_ROOT = PROJECT_ROOT
 LOG_DIR = PROJECT_ROOT / "logs"
 HTML_EXTENSIONS = {".html", ".htm", ".xhtml"}
 XML_EXTENSIONS = {".xml", ".rss", ".atom"}
@@ -123,7 +123,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--root",
         type=Path,
         default=DEFAULT_ROOT,
-        help="Root directory used to resolve manifest paths (default: nlping.ru).",
+        help="Root directory used to resolve manifest paths (default: project root).",
     )
     parser.add_argument(
         "--baseline",
