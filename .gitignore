@@ -1,5 +1,8 @@
 baseline_snapshot.tar*
 
+# ignore accidental temp files like .!12345!*.html
+.!*
+
 # Generated baseline artifacts (kept out of git to avoid huge diffs)
 baseline_md5.txt
 snapshot/*
