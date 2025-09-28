@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate a compressed MD5 checksum baseline for the nlping.ru mirror."""
+"""Generate a compressed MD5 checksum baseline for the site mirror."""
 from __future__ import annotations
 
 import argparse
@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Iterable
 
 ROOT = Path(__file__).resolve().parent.parent
-DEFAULT_SOURCE = ROOT / "nlping.ru"
+DEFAULT_SOURCE = ROOT
 DEFAULT_OUTPUT = ROOT / "snapshot" / "baseline_md5.txt.gz"
 
 
@@ -41,7 +41,7 @@ def parse_args() -> argparse.Namespace:
         "--source",
         type=Path,
         default=DEFAULT_SOURCE,
-        help="Root directory to hash (default: nlping.ru)",
+        help="Root directory to hash (default: project root)",
     )
     parser.add_argument(
         "--output",

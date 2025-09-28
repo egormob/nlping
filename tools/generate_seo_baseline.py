@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Generate SEO baseline data for nlping.ru content.
+"""Generate SEO baseline data for the migrated site content.
 
-The script walks through the legacy mirror stored in the nlping.ru/
-folder, extracts core SEO fields (title, description, keywords, first
-H1) from HTML files, and captures channel metadata from XML feeds.
+The script walks through the mirrored site stored at the repository root,
+extracts core SEO fields (title, description, keywords, first H1) from HTML
+files, and captures channel metadata from XML feeds.
 
 By default the result is written as a gzip-compressed JSON file to
 ``snapshot/seo_baseline.json.gz`` so the repository does not carry a
@@ -23,7 +23,7 @@ from typing import Dict, List, Optional
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parent.parent
-CONTENT_ROOT = ROOT / "nlping.ru"
+CONTENT_ROOT = ROOT
 DEFAULT_OUTPUT_PATH = ROOT / "snapshot" / "seo_baseline.json.gz"
 
 
