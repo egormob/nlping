@@ -65,7 +65,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 | Код | Шаг | Проверки и артефакты | Статус |
 | --- | --- | --- | --- |
-| C1 | Перенести корневые HTML (`index.html`, `news.html`, …) из `nlping.ru/` в корень, настроить главный `index.html`. | Проверка: локальный `python -m http.server`, ручная проверка главной. | ⏳ Не начато. |
+| C1 | Перенести корневые HTML (`index.html`, `news.html`, …) из `nlping.ru/` в корень, настроить главный `index.html`. | Проверка: локальный `python -m http.server`, ручная проверка главной. | ✅ Выполнено — HTML верхнего уровня перенесены из `nlping.ru/` в корень, дубликатов не осталось. |
 | C2 | Перемещать каталоги партиями (`css/`, `images/`, `js/`, `p/…`) с промежуточными проверками `tools/check_links.py`. | Проверка: отчёты скрипта, ручная выборка. | ⏳ Не начато. |
 | C3 | Очистить остатки HTTrack (индекс каталога, пустые директории), обновить ссылки в README. | Проверка: `find nlping.ru -maxdepth 1` → пусто. | ⏳ Не начато. |
 
@@ -188,6 +188,8 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-25T17:53:41Z | B3 — создан `tools/check_utf8.py`, прогнан по манифесту для сверки кодировки и SEO | `python tools/check_utf8.py` → `logs/check_utf8-20250925T175341Z.json` | ✅ Инструмент готов, лог сохранён в `logs/` для ссылок при следующих шагах. |
 | 2025-09-28T16:35:04Z | C1 — перенёс корневой index, блог, RSS и ключевые лендинги | `python tools/check_links.py` (логи: `logs/check_links-20250928T162859Z.json`, `...T163031Z.json`, `...T163141Z.json`, `...T163225Z.json`, `...T163441Z.json`); `python tools/check_utf8.py` (логи: `logs/check_utf8-20250928T162907Z.json`, `...T163036Z.json`, `...T163147Z.json`, `...T163229Z.json`, `...T163443Z.json`); `python -m http.server` + `curl -I` по трём страницам каждой партии | ▶️ Основные страницы доступны из корня; требуется перенести оставшиеся HTML и связанные каталоги. |
 | 2025-09-28T16:44:44Z | C1 — перенёс блок «Видео» (video/index8d4e/print8d4e) | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T164430Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T164433Z.json`; `python -m http.server` + `curl -I` по `video.html`, `index8d4e.html`, `print8d4e.html` | ✅ Раздел «Видео» работает из корня, продолжаю перенос оставшихся страниц. |
+| 2025-09-28T17:17:45Z | C1 — поднял ассеты раздела «Видео» (css/, js/, images/, img/, favicon.ico) в корень | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T171738Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T171743Z.json` | ✅ Стили, скрипты и изображения раздела доступны из корня, ссылка на hop-интеграцию удалена. |
+| 2025-09-28T17:26:14Z | C1 — перенёс оставшиеся 2127 HTML верхнего уровня из `nlping.ru/` в корень | `python tools/check_links.py --scope .` → `logs/check_links-20250928T172536Z.json`; `python tools/check_utf8.py --scope . --no-manifest` → `logs/check_utf8-20250928T172548Z.json`; `python -m http.server 8000` + `curl -I` по `index.html`, `F48A6.html`, `setup925a.html` | ✅ Каталог `nlping.ru/` очищен от корневых HTML, страницы обслуживаются из нового положения. |
 
 ## Текущее состояние дорожной карты
 
@@ -199,14 +201,14 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ B1: создан и выполнен `tools/list_assets.py`, отчёт в `artifacts/assets.json`.
 - ✅ B2: `tools/check_links.py` подтверждает отсутствие битых ресурсов (`logs/check_links-20250923T200035Z.json`), устаревший hop-скрипт удалён.
 - ✅ B3: `tools/check_utf8.py` проверяет кодировку и SEO-блоки; логи — `logs/check_utf8-*.json`.
-- ▶️ C1: перенос корневых HTML в процессе — главная, блог, RSS, ключевые лендинги и раздел «Видео» уже в корне, остаются остальные страницы и каталоги с ассетами.
+- ✅ C1: перенос корневых HTML завершён — весь верхний уровень переехал в корень, каталог `nlping.ru/` больше не содержит HTML-файлов.
 - ⏳ Остальные шаги (C2–E4) не начаты.
 
-Следующий шаг: C1 — перенести корневые HTML в корень репозитория.
+Следующий шаг: C2 — переносить каталоги с ассетами из `nlping.ru/` партиями.
 
-Следующий шаг: C1 — перенести корневые HTML в корень репозитория.
+Следующий шаг: C2 — переносить каталоги с ассетами из `nlping.ru/` партиями.
 
-**Следующий шаг:** довести до merge актуальный PR (**ветка задачи → `main`**) и затем перейти к **C1** — переносу корневых HTML в корень репозитория.
+**Следующий шаг:** довести до merge актуальный PR (**ветка задачи → `main`**) и затем перейти к **C2** — переносу каталогов с ассетами.
 
 ### Быстрый старт сессии
 
