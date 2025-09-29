@@ -154,6 +154,10 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 > По завершении C2 перенеси этот блок в журнал и подготовь чек-лист для шага C3.
 
+#### Прогресс по шагу C2
+
+- 2025-09-29T09:24:13Z — перенёс каталог `files/` в корень. Проверки: `python tools/check_links.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html`, `python tools/check_utf8.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html`, `curl -I` по `index7946.html`, `print7946.html`, `5C03C101-F4715-F6A93AC7.html` (через `python -m http.server`).
+
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
 Используй короткую команду:
@@ -188,6 +192,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-28T16:35:04Z | C1 — перенёс корневой index, блог, RSS и ключевые лендинги | `python tools/check_links.py` (логи: `logs/check_links-20250928T162859Z.json`, `...T163031Z.json`, `...T163141Z.json`, `...T163225Z.json`, `...T163441Z.json`); `python tools/check_utf8.py` (логи: `logs/check_utf8-20250928T162907Z.json`, `...T163036Z.json`, `...T163147Z.json`, `...T163229Z.json`, `...T163443Z.json`); `python -m http.server` + `curl -I` по трём страницам каждой партии | ▶️ Основные страницы доступны из корня; требуется перенести оставшиеся HTML и связанные каталоги. |
 | 2025-09-28T16:44:44Z | C1 — перенёс блок «Видео» (video/index8d4e/print8d4e) | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T164430Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T164433Z.json`; `python -m http.server` + `curl -I` по `video.html`, `index8d4e.html`, `print8d4e.html` | ✅ Раздел «Видео» работает из корня, продолжаю перенос оставшихся страниц. |
 | 2025-09-28T17:17:45Z | C1 — поднял ассеты раздела «Видео» (css/, js/, images/, img/, favicon.ico) в корень | `python tools/check_links.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_links-20250928T171738Z.json`; `python tools/check_utf8.py --scope video.html --scope index8d4e.html --scope print8d4e.html` → `logs/check_utf8-20250928T171743Z.json` | ✅ Стили, скрипты и изображения раздела доступны из корня, ссылка на hop-интеграцию удалена. |
+| 2025-09-29T09:24:13Z | C2 — перенёс каталог `files/` в корень | `python tools/check_links.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html` → `logs/check_links-20250929T092348Z.json`; `python tools/check_utf8.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html` → `logs/check_utf8-20250929T092402Z.json`; `curl -I` (через `python -m http.server`) по трем страницам | ✅ Каталог доступен из корня, материалы скачиваются по прямым ссылкам. |
 | 2025-09-28T17:26:14Z | C1 — перенёс оставшиеся 2127 HTML верхнего уровня из `nlping.ru/` в корень | `python tools/check_links.py --scope .` → `logs/check_links-20250928T172536Z.json`; `python tools/check_utf8.py --scope . --no-manifest` → `logs/check_utf8-20250928T172548Z.json`; `python -m http.server 8000` + `curl -I` по `index.html`, `F48A6.html`, `setup925a.html` | ✅ Каталог `nlping.ru/` очищен от корневых HTML, страницы обслуживаются из нового положения. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
