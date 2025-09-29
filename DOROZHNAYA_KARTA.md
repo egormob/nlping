@@ -157,6 +157,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 #### Прогресс по шагу C2
 
 - 2025-09-29T09:24:13Z — перенёс каталог `files/` в корень. Проверки: `python tools/check_links.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html`, `python tools/check_utf8.py --scope index7946.html --scope print7946.html --scope 5C03C101-F4715-F6A93AC7.html`, `curl -I` по `index7946.html`, `print7946.html`, `5C03C101-F4715-F6A93AC7.html` (через `python -m http.server`).
+- 2025-09-29T09:31:14Z — перенёс каталог `player/` в корень. Проверки: `python tools/check_links.py --scope skazki2012.html --scope superpower.html --scope printd109.html`, `python tools/check_utf8.py --scope skazki2012.html --scope superpower.html --scope printd109.html`, `curl -I` по `skazki2012.html`, `superpower.html`, `printd109.html` (через `python -m http.server`).
 
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
