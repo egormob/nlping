@@ -68,7 +68,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | --- | --- | --- | --- |
 | C1 | Перенести корневые HTML (`index.html`, `news.html`, …) из `nlping.ru/` в корень, настроить главный `index.html`. | Проверка: локальный `python -m http.server`, ручная проверка главной. | ✅ Выполнено — HTML верхнего уровня перенесены из `nlping.ru/` в корень, дубликатов не осталось. |
 | C2 | Перемещать каталоги партиями (`css/`, `images/`, `js/`, `p/…`) с промежуточными проверками `tools/check_links.py`. | Проверка: отчёты скрипта, ручная выборка. | ✅ Выполнено — каталоги `_p_http_/`, `files/`, `player/`, `rep/`, `p/` перенесены в корень, проверки пройдены (см. «Прогресс по шагу C2»). |
-| C3 | Очистить остатки HTTrack (индекс каталога, пустые директории), обновить ссылки в README. | Проверка: `find nlping.ru -maxdepth 1` → пусто. | ⏳ Не начато. |
+| C3 | Очистить остатки HTTrack (индекс каталога, пустые директории), обновить ссылки в README. | Проверка: `find . -maxdepth 1 -name 'nlping.ru'` → пусто, `find . -name '.DS_Store'` → пусто. | ✅ Выполнено — каталог `hts-cache/` и `.DS_Store` удалены, README обновлён под новую структуру. |
 
 ### Этап D. Перекодировка в UTF-8 (по партиям)
 
@@ -170,6 +170,21 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 **Оставшиеся микро-шаги:** нет — этап C2 закрыт, можно переходить к C3.
 
+### Шаг C3 — очистка HTTrack-артефактов и документации
+
+1. Убедиться, что после переноса каталогов не восстановился `nlping.ru/` или другие пустые директории.
+2. Удалить временные HTTrack-файлы и папки (`hts-cache/`, `.DS_Store`), добавить их в `.gitignore`.
+3. Перепроверить, что ссылки на структуру в документации и README указывают на корень репозитория.
+4. Зафиксировать результаты в `DOROZHNAYA_KARTA.md` и подготовить переход к шагу D0.
+
+#### Прогресс по шагу C3
+
+- 2025-09-29T20:08:00Z — удалил `hts-cache/` и все `.DS_Store`, добавил шаблон в `.gitignore`, создал README со ссылками на инструменты. Проверки: `find . -maxdepth 1 -name 'nlping.ru'` (пусто), `find . -name '.DS_Store'` (пусто).
+
+**Сделанные микро-шаги (3/3):** проверка отсутствия `nlping.ru/`, удаление HTTrack-артефактов, обновление README.
+
+**Оставшиеся микро-шаги:** нет — этап C3 закрыт, готов к началу D0.
+
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
 Используй короткую команду:
@@ -209,6 +224,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-29T17:23:45Z | C2 — перенёс каталог `_p_http_/` в корень | `python tools/check_links.py --scope index5b8c.html --scope mozg2 --scope _p_http_/nlping.ru/index9a3e.html --scope _p_http_/w.nlping.ru/mozg_special/_/p_.html` → `logs/check_links-20250929T172319Z.json`; `python tools/check_utf8.py --scope index5b8c.html --scope mozg2 --scope _p_http_/nlping.ru/index9a3e.html --scope _p_http_/w.nlping.ru/mozg_special/_/p_.html` → `logs/check_utf8-20250929T172323Z.json`; `python -m http.server 8000` + `curl -I` по `index5b8c.html`, `mozg2`, `_p_http_/nlping.ru/index9a3e.html` | ✅ Каталог `_p_http_/` доступен из корня; редиректы HTTrack продолжают работать с локальными заглушками внешних страниц. |
 | 2025-09-29T19:35:30Z | C2 — обновил относительные ссылки `w.nlping.ru` и `webinar.nlping.ru` после переноса ассетов | `python tools/check_links.py --scope w.nlping.ru --scope webinar.nlping.ru` → `logs/check_links-20250929T193503Z.json`; `python tools/check_utf8.py --scope w.nlping.ru --scope webinar.nlping.ru` → `logs/check_utf8-20250929T193507Z.json`; `python -m http.server 8000` + `curl -I` по `w.nlping.ru/index.html`, `w.nlping.ru/nlp-master/index.html`, `webinar.nlping.ru/index.html` | ✅ Скрипты и ссылки на главную `nlping.ru` работают из нового расположения ассетов. |
 | 2025-09-28T17:26:14Z | C1 — перенёс оставшиеся 2127 HTML верхнего уровня из `nlping.ru/` в корень | `python tools/check_links.py --scope .` → `logs/check_links-20250928T172536Z.json`; `python tools/check_utf8.py --scope . --no-manifest` → `logs/check_utf8-20250928T172548Z.json`; `python -m http.server 8000` + `curl -I` по `index.html`, `F48A6.html`, `setup925a.html` | ✅ Каталог `nlping.ru/` очищен от корневых HTML, страницы обслуживаются из нового положения. |
+| 2025-09-29T20:08:00Z | C3 — удалены артефакты HTTrack и обновлена документация | `find . -maxdepth 1 -name 'nlping.ru'` → пусто; `find . -name '.DS_Store'` → пусто; создан README с актуальными командами | ✅ База очищена, можно переходить к разработке `tools/reencode.py`. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -235,9 +251,10 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ B3: `tools/check_utf8.py` проверяет кодировку и SEO-блоки; логи — `logs/check_utf8-*.json`.
 - ✅ C1: перенос корневых HTML завершён — весь верхний уровень переехал в корень, каталог `nlping.ru/` больше не содержит HTML-файлов.
 - ✅ C2: каталоги `_p_http_/`, `files/`, `player/`, `rep/`, `p/` перенесены в корень, проверки по партиям зафиксированы.
-- ⏳ Остальные шаги (C3–E4) не начаты.
+- ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
+- ⏳ Остальные шаги (D0–E4) не начаты.
 
-**Следующий шаг:** C3 — очистить остатки HTTrack и обновить README после проверки.
+**Следующий шаг:** D0 — разработать `tools/reencode.py` и тесты.
 
 ### Быстрый старт сессии
 

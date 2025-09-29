@@ -1,5 +1,11 @@
 baseline_snapshot.tar*
 
+# macOS Finder metadata
+.DS_Store
+
+# Python bytecode caches
+__pycache__/
+
 # ignore accidental temp files like .!12345!*.html
 .!*
 
