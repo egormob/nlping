@@ -74,7 +74,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 | Код | Шаг | Проверки и артефакты | Статус |
 | --- | --- | --- | --- |
-| D0 | Написать `tools/reencode.py` (CP1251 → UTF-8) + модульные тесты `tools/tests/test_reencode.py`. | Проверка: `pytest tools/tests/test_reencode.py`. | ⏳ Не начато. |
+| D0 | Написать `tools/reencode.py` (CP1251 → UTF-8) + модульные тесты `tools/tests/test_reencode.py`. | Проверка: `pytest tools/tests/test_reencode.py`. | ✅ Выполнено — скрипт перекодировки и тесты добавлены, проверка `pytest tools/tests/test_reencode.py`. |
 | D1 | Первая партия (корневые HTML, RSS, критичные страницы). | Проверки: `tools/reencode.py`, `rg -n "windows-1251"`, ручной просмотр. | ⏳ Не начато. |
 | D2…Dn | Остальные директории (`p/0*`, `p/1*`, …) — не более 150 файлов за итерацию. | Проверки: `tools/check_utf8.py --scope <dir>`, выборка страниц. | ⏳ Не начато. |
 | Dlast | Финальная валидация: `rg -n "windows-1251" .` → пусто; полный прогон `tools/check_utf8.py --manifest`. | Артефакты: лог проверки, обновлённые контрольные суммы. | ⏳ Не начато. |
@@ -225,6 +225,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-29T19:35:30Z | C2 — обновил относительные ссылки `w.nlping.ru` и `webinar.nlping.ru` после переноса ассетов | `python tools/check_links.py --scope w.nlping.ru --scope webinar.nlping.ru` → `logs/check_links-20250929T193503Z.json`; `python tools/check_utf8.py --scope w.nlping.ru --scope webinar.nlping.ru` → `logs/check_utf8-20250929T193507Z.json`; `python -m http.server 8000` + `curl -I` по `w.nlping.ru/index.html`, `w.nlping.ru/nlp-master/index.html`, `webinar.nlping.ru/index.html` | ✅ Скрипты и ссылки на главную `nlping.ru` работают из нового расположения ассетов. |
 | 2025-09-28T17:26:14Z | C1 — перенёс оставшиеся 2127 HTML верхнего уровня из `nlping.ru/` в корень | `python tools/check_links.py --scope .` → `logs/check_links-20250928T172536Z.json`; `python tools/check_utf8.py --scope . --no-manifest` → `logs/check_utf8-20250928T172548Z.json`; `python -m http.server 8000` + `curl -I` по `index.html`, `F48A6.html`, `setup925a.html` | ✅ Каталог `nlping.ru/` очищен от корневых HTML, страницы обслуживаются из нового положения. |
 | 2025-09-29T20:08:00Z | C3 — удалены артефакты HTTrack и обновлена документация | `find . -maxdepth 1 -name 'nlping.ru'` → пусто; `find . -name '.DS_Store'` → пусто; создан README с актуальными командами | ✅ База очищена, можно переходить к разработке `tools/reencode.py`. |
+| 2025-09-30T09:10:00Z | D0 — разработан `tools/reencode.py`, добавлены модульные тесты | `pytest tools/tests/test_reencode.py`; просмотр лога `logs/reencode-*.json` в tmp | ✅ Скрипт перекодировки готов, тесты покрывают успешную перекодировку, пропуск UTF-8 и обработку ошибок. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -252,9 +253,10 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C1: перенос корневых HTML завершён — весь верхний уровень переехал в корень, каталог `nlping.ru/` больше не содержит HTML-файлов.
 - ✅ C2: каталоги `_p_http_/`, `files/`, `player/`, `rep/`, `p/` перенесены в корень, проверки по партиям зафиксированы.
 - ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
-- ⏳ Остальные шаги (D0–E4) не начаты.
+- ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
+- ⏳ Остальные шаги (D1–E4) не начаты.
 
-**Следующий шаг:** D0 — разработать `tools/reencode.py` и тесты.
+**Следующий шаг:** D1 — первая партия перекодировки контента.
 
 ### Быстрый старт сессии
 
