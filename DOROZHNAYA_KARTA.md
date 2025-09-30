@@ -201,10 +201,13 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 - 2025-09-30T07:42:59Z — перекодировал серию `index1*`/`print1*` (`python tools/reencode.py --paths index1*.html print1*.html --limit 200` → `logs/reencode-20250930T074259Z.json`), обновил мета-теги на `charset=utf-8`, `rg -n "windows-1251" index1*.html print1*.html` → пусто.
 - 2025-09-30T07:43:58Z — `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index1*.html print1*.html)` → `logs/check_utf8-20250930T074358Z.json`, ручная проверка через `python -m http.server` + `curl -I` по `index1178.html`, `index1a62.html`, `print1178.html`.
+- 2025-09-30T08:42:26Z — перекодировал серию `index2*`/`print2*` (`python tools/reencode.py --paths index2*.html print2*.html` → `logs/reencode-20250930T084226Z.json`), заменил объявления кодировки на `charset=utf-8`, `rg -n "windows-1251" index2*.html print2*.html` → пусто.
+- 2025-09-30T08:43:35Z — `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index2*.html print2*.html)` → `logs/check_utf8-20250930T084335Z.json`, подозрительных последовательностей и замен символов нет.
+- 2025-09-30T08:44:10Z — ручная проверка через `python -m http.server 8000` + `curl -I` по `index205f.html`, `index2c55.html`, `print205f.html`.
 
-**Сделанные микро-шаги (4/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии `0*`, перекодировка серии `index1*`/`print1*`, проверки `check_utf8` и ручной просмотр для серии `1*`.
+**Сделанные микро-шаги (7/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии `0*`, перекодировка серии `index1*`/`print1*`, проверки `check_utf8` и ручной просмотр для серии `1*`, перекодировка `index2*`/`print2*`, автоматическая и ручная проверка серии `2*`.
 
-**Оставшиеся микро-шаги:** следующие серии `index2*`/`print2*` и далее по нумерации.
+**Оставшиеся микро-шаги:** следующие серии `index3*`/`print3*` и далее по нумерации.
 
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
@@ -250,6 +253,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-30T11:15:00Z | D1 — перекодированы корневые HTML, RSS и ключевые лендинги; `tools/reencode.py` научили исправлять двойное кодирование | `python tools/reencode.py --paths index.html … rss/index.html` → `logs/reencode-20250930T070225Z.json`; `pytest tools/tests/test_reencode.py`; `python tools/check_utf8.py --scope index.html … --no-manifest` → `logs/check_utf8-20250930T070433Z.json` | ✅ Первая партия D1 закрыта, можно переходить к каталогам `p/0*`. |
 | 2025-09-30T07:14:32Z | D2 — перекодировал серию `index0*`/`print0*` и подтвердил UTF-8 | `python tools/reencode.py --paths index0*.html print0*.html --limit 200` → `logs/reencode-20250930T071338Z.json`; `rg -n "windows-1251" index0*.html print0*.html`; `python tools/check_utf8.py --no-manifest …` → `logs/check_utf8-20250930T071432Z.json` | ✅ Серия `0*` в UTF-8, далее — `index1*`/`print1*`. |
 | 2025-09-30T07:43:58Z | D2 — перекодировал серию `index1*`/`print1*` и провёл проверки | `python tools/reencode.py --paths index1*.html print1*.html --limit 200` → `logs/reencode-20250930T074259Z.json`; `rg -n "windows-1251" index1*.html print1*.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index1*.html print1*.html)` → `logs/check_utf8-20250930T074358Z.json`; `curl -I` по `index1178.html`, `index1a62.html`, `print1178.html` (через `python -m http.server`) | ✅ Серия `1*` подтверждена, следующая партия — `index2*`/`print2*`. |
+| 2025-09-30T08:44:10Z | D2 — перекодировал серию `index2*`/`print2*` и подтвердил UTF-8 | `python tools/reencode.py --paths index2*.html print2*.html` → `logs/reencode-20250930T084226Z.json`; `rg -n "windows-1251" index2*.html print2*.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index2*.html print2*.html)` → `logs/check_utf8-20250930T084335Z.json`; `python -m http.server 8000` + `curl -I` по `index205f.html`, `index2c55.html`, `print205f.html` | ✅ Серия `2*` подтверждена, следующая партия — `index3*`/`print3*`. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -279,9 +283,9 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
 - ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
-- ▶️ D2: серии `index0*`/`print0*` и `index1*`/`print1*` перекодированы, впереди `index2*`/`print2*`.
+- ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*` и `index2*`/`print2*` перекодированы, впереди `index3*`/`print3*`.
 
-**Следующий шаг:** D2 — продолжить перекодировку серий `index2*`/`print2*`.
+**Следующий шаг:** D2 — продолжить перекодировку серий `index3*`/`print3*`.
 
 ### Быстрый старт сессии
 
