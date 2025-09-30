@@ -24,6 +24,14 @@ except ImportError:  # pragma: no cover - fallback in test environment
 SUPPORTED_SUFFIXES = {".html", ".htm", ".xml", ".xhtml"}
 DEFAULT_LIMIT = 150
 
+WINDOWS_1251_HINTS = (
+    b"charset=windows-1251",
+    rb"charset\u003dwindows-1251",
+    b"charset = windows-1251",
+    b"encoding=\"windows-1251\"",
+    b"encoding='windows-1251'",
+)
+
 
 @dataclass
 class FileReport:
@@ -90,6 +98,42 @@ def detect_encoding(data: bytes) -> Optional[str]:
     return None
 
 
+def _maybe_decode_double_encoded(payload: bytes) -> Optional[str]:
+    """Best-effort recovery for UTF-8 payloads with Windows-1251 hints.
+
+    HTTrack occasionally produced files where Windows-1251 bytes were first
+    interpreted as Latin-1 characters and *then* stored as UTF-8.  Such pages
+    already pass a strict UTF-8 decoder but contain mojibake ("Ã\xadÃ\x8bÃ\x8f" вместо
+    «НЛП»).  When a file advertises `charset=windows-1251` we attempt to
+    reverse this by:
+
+    1. Decoding the payload as UTF-8 to get the mojibake string.
+    2. Re-encoding that string as Latin-1, returning to the original byte
+       values.
+    3. Decoding the bytes as Windows-1251 to obtain real Cyrillic text.
+
+    If any of these steps fail, or the resulting text does not contain Cyrillic
+    characters, the function returns ``None`` to let the regular UTF-8 path
+    proceed unchanged.
+    """
+
+    lowered = payload.lower()
+    if not any(hint in lowered for hint in WINDOWS_1251_HINTS):
+        return None
+
+    try:
+        text = payload.decode("utf-8")
+        raw_bytes = text.encode("latin1")
+        recovered = raw_bytes.decode("windows-1251")
+    except (UnicodeDecodeError, UnicodeEncodeError):
+        return None
+
+    if not any("\u0400" <= char <= "\u04ff" for char in recovered):
+        return None
+
+    return recovered
+
+
 def compute_md5(data: bytes) -> str:
     return hashlib.md5(data).hexdigest()
 
@@ -117,7 +161,8 @@ def convert_file(path: Path) -> FileReport:
             error="encoding detection failed",
         )
 
-    # Already UTF-8?  Double-check by decoding strictly.
+    # Already UTF-8?  Double-check by decoding strictly and attempt to
+    # auto-recover mojibake when the markup still declares Windows-1251.
     if detected in {"utf-8", "ascii", "utf_8"}:
         try:
             payload.decode("utf-8", errors="strict")
@@ -129,6 +174,21 @@ def convert_file(path: Path) -> FileReport:
                 detected_encoding=detected,
                 error=f"utf-8 validation failed: {exc}",
             )
+
+        recovered = _maybe_decode_double_encoded(payload)
+        if recovered is not None:
+            reencoded = recovered.encode("utf-8")
+            if reencoded != payload:
+                path.write_bytes(reencoded)
+                return FileReport(
+                    path=str(path),
+                    status="converted",
+                    original_encoding="windows-1251",
+                    detected_encoding=detected,
+                    original_hash=original_hash,
+                    new_hash=compute_md5(reencoded),
+                )
+
         return FileReport(
             path=str(path),
             status="skipped",
