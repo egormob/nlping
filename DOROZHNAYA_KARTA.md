@@ -76,7 +76,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | --- | --- | --- | --- |
 | D0 | Написать `tools/reencode.py` (CP1251 → UTF-8) + модульные тесты `tools/tests/test_reencode.py`. | Проверка: `pytest tools/tests/test_reencode.py`. | ✅ Выполнено — скрипт перекодировки и тесты добавлены, проверка `pytest tools/tests/test_reencode.py`. |
 | D1 | Первая партия (корневые HTML, RSS, критичные страницы). | Проверки: `tools/reencode.py`, `rg -n "windows-1251"`, ручной просмотр. | ✅ Выполнено — перекодированы корневые страницы, RSS и ключевые лендинги (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`). |
-| D2…Dn | Остальные директории (`p/0*`, `p/1*`, …) — не более 150 файлов за итерацию. | Проверки: `tools/check_utf8.py --scope <dir>`, выборка страниц. | ⏳ Не начато. |
+| D2…Dn | Остальные директории (`p/0*`, `p/1*`, …) — не более 150 файлов за итерацию. | Проверки: `tools/check_utf8.py --scope <dir>`, выборка страниц. | ▶️ В процессе — начата перекодировка серий `index0*`/`print0*`. |
 | Dlast | Финальная валидация: `rg -n "windows-1251" .` → пусто; полный прогон `tools/check_utf8.py --manifest`. | Артефакты: лог проверки, обновлённые контрольные суммы. | ⏳ Не начато. |
 
 ### Этап E. Деплой и верификация
@@ -185,6 +185,24 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 **Оставшиеся микро-шаги:** нет — этап C3 закрыт, готов к началу D0.
 
+### Шаг D2 — перекодировка серий `index0*`/`print0*`
+
+1. Сверь состав серии по `ls index0*.html print0*.html`, дополни списком связанных `print*.html`.
+2. Запусти `python tools/reencode.py --paths index0*.html print0*.html --limit 200` и проверь лог в `logs/reencode-*.json`.
+3. Заменяй мета-теги на `charset=utf-8`, если скрипт восстановил текст, но оставил старое объявление кодировки.
+4. Выполни `rg -n "windows-1251" index0*.html print0*.html` — убедись, что следов старой кодировки нет.
+5. Запусти `python tools/check_utf8.py --no-manifest` с `--scope` для каждого файла серии, сохрани отчёт в `logs/check_utf8-*.json`.
+6. Просмотри минимум три страницы вручную (главная серии, одна статья и соответствующий `print`-вариант).
+
+#### Прогресс по шагу D2
+
+- 2025-09-30T07:13:38Z — перекодировал серию `index0*`/`print0*` в UTF-8 (`python tools/reencode.py --paths index0*.html print0*.html --limit 200` → `logs/reencode-20250930T071338Z.json`), заменил мета-теги и проверил `rg -n "windows-1251" index0*.html print0*.html` (пусто).
+- 2025-09-30T07:14:32Z — `python tools/check_utf8.py --no-manifest …` по всем файлам серии → `logs/check_utf8-20250930T071432Z.json`, подозрительных последовательностей и замен символов не обнаружено.
+
+**Сделанные микро-шаги (2/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии.
+
+**Оставшиеся микро-шаги:** следующие серии `index1*`/`print1*` и далее по нумерации.
+
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
 Используй короткую команду:
@@ -227,6 +245,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-09-29T20:08:00Z | C3 — удалены артефакты HTTrack и обновлена документация | `find . -maxdepth 1 -name 'nlping.ru'` → пусто; `find . -name '.DS_Store'` → пусто; создан README с актуальными командами | ✅ База очищена, можно переходить к разработке `tools/reencode.py`. |
 | 2025-09-30T09:10:00Z | D0 — разработан `tools/reencode.py`, добавлены модульные тесты | `pytest tools/tests/test_reencode.py`; просмотр лога `logs/reencode-*.json` в tmp | ✅ Скрипт перекодировки готов, тесты покрывают успешную перекодировку, пропуск UTF-8 и обработку ошибок. |
 | 2025-09-30T11:15:00Z | D1 — перекодированы корневые HTML, RSS и ключевые лендинги; `tools/reencode.py` научили исправлять двойное кодирование | `python tools/reencode.py --paths index.html … rss/index.html` → `logs/reencode-20250930T070225Z.json`; `pytest tools/tests/test_reencode.py`; `python tools/check_utf8.py --scope index.html … --no-manifest` → `logs/check_utf8-20250930T070433Z.json` | ✅ Первая партия D1 закрыта, можно переходить к каталогам `p/0*`. |
+| 2025-09-30T07:14:32Z | D2 — перекодировал серию `index0*`/`print0*` и подтвердил UTF-8 | `python tools/reencode.py --paths index0*.html print0*.html --limit 200` → `logs/reencode-20250930T071338Z.json`; `rg -n "windows-1251" index0*.html print0*.html`; `python tools/check_utf8.py --no-manifest …` → `logs/check_utf8-20250930T071432Z.json` | ✅ Серия `0*` в UTF-8, далее — `index1*`/`print1*`. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -256,9 +275,9 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
 - ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
-- ⏳ Остальные шаги (D2–E4) не начаты.
+- ▶️ D2: серия `index0*`/`print0*` перекодирована, впереди следующие блоки (`index1*`, `print1*`).
 
-**Следующий шаг:** D2 — начать перекодировку каталогов `p/0*`.
+**Следующий шаг:** D2 — продолжить перекодировку серий `index1*`/`print1*`.
 
 ### Быстрый старт сессии
 
