@@ -123,10 +123,39 @@ def _maybe_decode_double_encoded(payload: bytes) -> Optional[str]:
 
     try:
         text = payload.decode("utf-8")
-        raw_bytes = text.encode("latin1")
-        recovered = raw_bytes.decode("windows-1251")
-    except (UnicodeDecodeError, UnicodeEncodeError):
+    except UnicodeDecodeError:
         return None
+
+    try:
+        raw_bytes = text.encode("latin1")
+    except UnicodeEncodeError:
+        # Some double-encoded documents contain punctuation such as en-dash
+        # (`\u2013`) that falls outside of Latin-1.  When that happens we fall
+        # back to a per-character conversion: treat every code point within the
+        # 0-255 range as if it were a Windows-1251 byte while leaving genuine
+        # Unicode characters intact.
+        recovered_chars = []
+        changed = False
+        for char in text:
+            code = ord(char)
+            if code <= 0xFF:
+                try:
+                    decoded_char = bytes([code]).decode("windows-1251")
+                except UnicodeDecodeError:
+                    decoded_char = char
+                if decoded_char != char:
+                    changed = True
+                recovered_chars.append(decoded_char)
+            else:
+                recovered_chars.append(char)
+        if not changed:
+            return None
+        recovered = "".join(recovered_chars)
+    else:
+        try:
+            recovered = raw_bytes.decode("windows-1251")
+        except UnicodeDecodeError:
+            return None
 
     if not any("\u0400" <= char <= "\u04ff" for char in recovered):
         return None
