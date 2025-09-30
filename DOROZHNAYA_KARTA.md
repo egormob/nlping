@@ -210,10 +210,13 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - 2025-09-30T11:06:12Z — `python -m http.server 8000` + `curl -I` по `index31be.html`, `index3a80.html`, `print31be.html` подтвердили доступность страниц серии в UTF-8.
 - 2025-09-30T11:52:25Z — перекодировал серию `index4*`/`print4*` (`python tools/reencode.py --paths index4*.html print4*.html --limit 200` → `logs/reencode-20250930T115225Z.json`), заменил объявления кодировки на `charset=utf-8`, `rg -n "windows-1251" index4*.html print4*.html` → пусто.
 - 2025-09-30T11:52:48Z — `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index4*.html print4*.html)` → `logs/check_utf8-20250930T115248Z.json`; ручная проверка через `python -m http.server 8000` + `curl -I` по `index4066.html`, `index43f7.html`, `print4686.html` подтвердила корректную отдачу UTF-8.
+- 2025-09-30T12:14:06Z — перекодировал серию `index5*`/`print5*` (`python tools/reencode.py --paths index5*.html print5*.html --limit 200` → `logs/reencode-20250930T121406Z.json`), заменил объявления кодировки на `charset=utf-8`, `rg -n "windows-1251" index5*.html print5*.html` → пусто.
+- 2025-09-30T12:14:35Z — `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' index5*.html print5*.html)` → `logs/check_utf8-20250930T121435Z.json`, подозрительных последовательностей и замен символов не обнаружено.
+- 2025-09-30T12:14:57Z — `python -m http.server 8000` + `curl -I` по `index54d1.html`, `print54d1.html`, `index5e28.html` подтвердили корректную отдачу серии `5*` в UTF-8.
 
-**Сделанные микро-шаги (12/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии `0*`, перекодировка серии `index1*`/`print1*`, проверки `check_utf8` и ручной просмотр для серии `1*`, перекодировка `index2*`/`print2*`, автоматическая и ручная проверка серии `2*`, перекодировка `index3*`/`print3*`, автоматическая и ручная проверка серии `3*`, перекодировка `index4*`/`print4*`, автоматическая и ручная проверка серии `4*`.
+**Сделанные микро-шаги (15/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии `0*`, перекодировка серии `index1*`/`print1*`, проверки `check_utf8` и ручной просмотр для серии `1*`, перекодировка `index2*`/`print2*`, автоматическая и ручная проверка серии `2*`, перекодировка `index3*`/`print3*`, автоматическая и ручная проверка серии `3*`, перекодировка `index4*`/`print4*`, автоматическая и ручная проверка серии `4*`, перекодировка серии `index5*`/`print5*`, автоматическая и ручная проверка серии `5*`.
 
-**Оставшиеся микро-шаги:** следующие серии `index5*`/`print5*` и далее по нумерации.
+**Оставшиеся микро-шаги:** следующие серии `index6*`/`print6*` и далее по нумерации.
 
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
@@ -289,9 +292,9 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
 - ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
-- ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*` и `index4*`/`print4*` перекодированы, впереди `index5*`/`print5*`.
+- ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*`, `index4*`/`print4*` и `index5*`/`print5*` перекодированы, впереди `index6*`/`print6*`.
 
-**Следующий шаг:** D2 — продолжить перекодировку серий `index5*`/`print5*`.
+**Следующий шаг:** D2 — продолжить перекодировку серий `index6*`/`print6*`.
 
 ### Быстрый старт сессии
 
