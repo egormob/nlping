@@ -1,0 +1,949 @@
+{
+  "generated_at": "2025-10-01T17:42:40.264101+00:00",
+  "manifest": null,
+  "baseline": "/workspace/nlping/snapshot/seo_baseline.json.gz",
+  "base_url": null,
+  "summary": {
+    "total": 35,
+    "suspect_sequences": 5
+  },
+  "results": [
+    {
+      "source": "scope:016538D0-F429D-CA4ECF10.html",
+      "path": "016538D0-F429D-CA4ECF10.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Как НЛП помогло Роберту Дилтсу спасти лицо",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Однажды Роберт Дилтс вместе с Ричардом Бэндлером зашли в один байкерскй бар...",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:02CAC148-F4242-2F439DD8.html",
+      "path": "02CAC148-F4242-2F439DD8.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Что такое NLP",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "...с разных точек зрения.",
+          "keywords": "нлп, nlp"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:02F59B37-F46B6-8AEDB203.html",
+      "path": "02F59B37-F46B6-8AEDB203.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Пространство сознания",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "О том, как устроена наше сознание, как это связано с устройством вселенной, и что такое"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:05A786A2-F45C8-2D36D89E.html",
+      "path": "05A786A2-F45C8-2D36D89E.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Внутренние критерии появления состояния высокой продуктивности",
+        "h1": "Внутренние критерии появления состояния высокой продуктивности",
+        "meta": {
+          "description": "Признаки, по которым можно самостоятельно определить появление состояния высокой продуктивности во время игры.",
+          "keywords": "состояние высокой продуктивности"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:05C2309E-F45F1-C047DAFA.html",
+      "path": "05C2309E-F45F1-C047DAFA.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Два младенца",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "О вере. О перерождении. О новой жизни."
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:07418910-F4287-EF16D006.html",
+      "path": "07418910-F4287-EF16D006.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Дзен базовых пресуппозиций НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Как все начиналось.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:11687B58-F45E2-8C64100A.html",
+      "path": "11687B58-F45E2-8C64100A.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Алфавит Нового Кода НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Правила игры в оригинальный Алфавит Нового Кода НЛП.",
+          "keywords": "алфавит, новый код нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:11BD560D-F45FE-0BC6D576.html",
+      "path": "11BD560D-F45FE-0BC6D576.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": true,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Спиральная Динамика Грейвза. Принципы Спиральной Динамики.",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "По материалам Д. Бека и К. Кована.",
+          "keywords": "спиральная динамика"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:11E0E292-F4297-CBD0453C.html",
+      "path": "11E0E292-F4297-CBD0453C.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": true,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Для НЛПеров",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Материалы, имеющие профессиональную ценность. Язык описания может быть не понятен тем,  кто не знаком с НЛП.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:11EFAB56-F4620-8C197C8C.html",
+      "path": "11EFAB56-F4620-8C197C8C.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Самая вкусная конфета",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "НЛПерская байка."
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:13CD39D6-F428B-318238B3.html",
+      "path": "13CD39D6-F428B-318238B3.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Что такое гипноз",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Как работает гипноз. Чем отличаются друг от друга классический гипноз, эриксоновский гипноз, цыганский гипноз и разговорный гипноз.",
+          "keywords": "гипноз, эриксоновский гипноз"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:1524DC52-F4651-2FB51D87.html",
+      "path": "1524DC52-F4651-2FB51D87.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Техники",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Коллекция техник НЛП, гипноза и системного мышления на все случаи жизни."
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:16403ABE-F42E9-0E7986EC.html",
+      "path": "16403ABE-F42E9-0E7986EC.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Сила 4-й позиции восприятия",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Позиция",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:178A46D8-F45CE-1BC73482.html",
+      "path": "178A46D8-F45CE-1BC73482.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": true,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Интервью с Доктором Ричардом Бэндлером",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Лос-Анджелес, США, 28 июля 2000 г.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:17C895A4-F4611-574C6567.html",
+      "path": "17C895A4-F4611-574C6567.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Механизм материализации мысли",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "...или как формируется результат в системе.",
+          "keywords": "материализация мысли"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:19C9920D-F462B-DEFDF3D8.html",
+      "path": "19C9920D-F462B-DEFDF3D8.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": true,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Кто творит реальность?",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Чему учат просветленные, или взгляд на реальность сквозь идеи квантовой физики."
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:1C368FFE-F42BD-D759686C.html",
+      "path": "1C368FFE-F42BD-D759686C.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Чтобы управлять людьми нужно уметь управлять собой",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Почему? Два момента...",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:1CBCC5D6-F4458-755C6468.html",
+      "path": "1CBCC5D6-F4458-755C6468.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Дзен бесконечности",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "О просветлении, целях, смерти и бесконечности.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:1F86A354-F42AD-D96C01F8.html",
+      "path": "1F86A354-F42AD-D96C01F8.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Неформальные лидеры - в чем их сила?",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Чем неформальные лидеры отличаются от других людей - что делает их таковыми.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:2133DB58-F45F6-57CEAFC0.html",
+      "path": "2133DB58-F45F6-57CEAFC0.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Настоящее чудо",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Притча из сборника 101 история дзен.",
+          "keywords": "дзен"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:21BE0682-F42C4-46DA02B6.html",
+      "path": "21BE0682-F42C4-46DA02B6.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Технология \"Волшебная палочка\" или Как заказать желание коллективному бессознательному",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Технология заказа желаний для исполнения.",
+          "keywords": "новый код нлп, нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:22AC6A6A-F45CB-4CFC4CD1.html",
+      "path": "22AC6A6A-F45CB-4CFC4CD1.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": true,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "История развития НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "История развития НЛП и появившихся из него направлений.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:23B4806C-F45D2-CC01FB56.html",
+      "path": "23B4806C-F45D2-CC01FB56.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Техники DHE",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Материалы с семинара Ричрарда Бэндлера по DHE.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:24705216-F4608-D3BB02AA.html",
+      "path": "24705216-F4608-D3BB02AA.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Типы бессознательного",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Конспект главы из книги Кена Уилбера",
+          "keywords": "бессознательное"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:282B8268-F43A2-F49EE280.html",
+      "path": "282B8268-F43A2-F49EE280.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Три валюты не считая денег",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Даже самым лучшим сотрудникам повышать зарплату до бесконечности невозможно, и в какой-то момент появляется риск, что другие компании могут переманить лучших сотрудников. Что можно сделать, чтобы удержать ценные кадры у себя в компании? Деньги, это не единственная ценность, которая нужна людям...",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:2C48C76E-F42BE-1E214CA1.html",
+      "path": "2C48C76E-F42BE-1E214CA1.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Мысли-вирусы",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Что такое мысли-вирусы и как их можно обезвредить.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:2C4D18A7-F45E1-65DD8717.html",
+      "path": "2C4D18A7-F45E1-65DD8717.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Базовые технологии Нового Кода НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Технологии Нового Кода НЛП, привезенные Джоном Гриндером в Москву в 2004 году, и их эволюционное продолжение.",
+          "keywords": "новый код нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:2D85ABA5-F45C7-1638D7E6.html",
+      "path": "2D85ABA5-F45C7-1638D7E6.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Четырехшаговая модель создания изменений",
+        "h1": "Четырехшаговая модель создания изменений",
+        "meta": {
+          "description": "Шаги техники.",
+          "keywords": "новый код нлп, нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:32347D7E-F4267-B9D62464.html",
+      "path": "32347D7E-F4267-B9D62464.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Статьи и материалы",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "keywords": "нлп, гипноз"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:34822337-F42AA-90F528B5.html",
+      "path": "34822337-F42AA-90F528B5.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "НЛП при устройстве на работу",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Приемы НЛП, которые я опишу ниже, вызовут интерес как у тех, кто устраивается на работу, так и у тех, кто проводит собеседование. Их так же полезно будет знать тем, кто продавая продукт, продает себя.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:360BA754-F466D-72D2651C.html",
+      "path": "360BA754-F466D-72D2651C.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Личностное редактирование",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Техники самостоятельного решения внутренних задач и"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:3B613833-F4244-5D2A14A0.html",
+      "path": "3B613833-F4244-5D2A14A0.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Что такое Игры Нового Кода НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Каким критериям должна отвечать Игра Нового Кода НЛП - 6 основных принципов, данных Джоном Гриндером.",
+          "keywords": "новый код нлп, нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:3C969702-F4372-49385C8D.html",
+      "path": "3C969702-F4372-49385C8D.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "История возникновения НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Как зарождалось НЛП, каковы его первоисточники и базовые модели. Почему у НЛП так много общего с гипнозом.",
+          "keywords": "нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:3D5D634B-F42A7-4825A88E.html",
+      "path": "3D5D634B-F42A7-4825A88E.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Новый Код НЛП",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Статьи, техники и конспекты по Новому Коду НЛП.",
+          "keywords": "новый код нлп"
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    },
+    {
+      "source": "scope:3D9668D0-F436B-A3575E15.html",
+      "path": "3D9668D0-F436B-A3575E15.html",
+      "exists": true,
+      "declared_charset": "utf-8",
+      "detected_encoding": "utf-8",
+      "contains_replacement": false,
+      "contains_suspect_sequences": false,
+      "issues": [],
+      "baseline_available": false,
+      "seo": {
+        "title": "Книги и самоучители",
+        "h1": "Бесплатные вебинары",
+        "meta": {
+          "description": "Избранные книги и самоучители."
+        }
+      },
+      "comparisons": [
+        {
+          "field": "baseline",
+          "baseline": null,
+          "current": null,
+          "diff": null
+        }
+      ]
+    }
+  ]
+}

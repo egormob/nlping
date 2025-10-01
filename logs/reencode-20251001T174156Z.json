@@ -1,0 +1,293 @@
+{
+  "generated_at": "20251001T174156Z",
+  "files": [
+    {
+      "path": "016538D0-F429D-CA4ECF10.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "1695030dff5c48623d1fc7a17703cdb5",
+      "new_hash": "3c99bb9fe49defe2629ec6481e4a238e",
+      "error": null
+    },
+    {
+      "path": "02CAC148-F4242-2F439DD8.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "324b2a3bada2f7b06bc7cc6a76072670",
+      "new_hash": "509a84c33a19aeb5d5465c1ee1a37730",
+      "error": null
+    },
+    {
+      "path": "02F59B37-F46B6-8AEDB203.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "075eaca7829553ceb10778b314564151",
+      "new_hash": "f70d17a7e05811ee27e16be86860f908",
+      "error": null
+    },
+    {
+      "path": "05A786A2-F45C8-2D36D89E.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "d944bbd09e0fdea5c2e698388b5b9c95",
+      "new_hash": "2ad308950a4251a59e0ad3a2cee40a7f",
+      "error": null
+    },
+    {
+      "path": "05C2309E-F45F1-C047DAFA.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "aa78c35d78fc23e9495a412e8fec9f42",
+      "new_hash": "7649ce7913a8ce5dffbd664a717f2101",
+      "error": null
+    },
+    {
+      "path": "07418910-F4287-EF16D006.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "0c2107d45165c6cc4a35c936dd44182b",
+      "new_hash": "0b5342c367da8ffce3c462560fe58a37",
+      "error": null
+    },
+    {
+      "path": "11687B58-F45E2-8C64100A.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "d74a1fc019ac3a56d874d277d13f43db",
+      "new_hash": "f4db3cf229c871b0f243516dc4f1a385",
+      "error": null
+    },
+    {
+      "path": "11BD560D-F45FE-0BC6D576.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "a7041b19cec970ed12c4f543142c6af9",
+      "new_hash": "3cb920a421f967c44c8ba2744df1f94e",
+      "error": null
+    },
+    {
+      "path": "11E0E292-F4297-CBD0453C.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "e2a7abcef38418ba4fbefd175985b151",
+      "new_hash": "68c949e66171f5f2465b822eed0a37a3",
+      "error": null
+    },
+    {
+      "path": "11EFAB56-F4620-8C197C8C.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "2735f530a9147e3c3c5b0ded0003cce9",
+      "new_hash": "26c23ecb8a749785f4a0299b599d5f8c",
+      "error": null
+    },
+    {
+      "path": "13CD39D6-F428B-318238B3.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "daa23abaf5e8abcfc41bc23b979de746",
+      "new_hash": "9fd91daffc593a06cf1ee64dcc15af9e",
+      "error": null
+    },
+    {
+      "path": "1524DC52-F4651-2FB51D87.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "988c8a19d299132cf126614c325b8af9",
+      "new_hash": "d753d4392e96788637c846880bc78996",
+      "error": null
+    },
+    {
+      "path": "16403ABE-F42E9-0E7986EC.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "a353310c64cade5ce9b64e7c4537ce47",
+      "new_hash": "4b8a275e4ac3310c09e58c21b3828e0c",
+      "error": null
+    },
+    {
+      "path": "178A46D8-F45CE-1BC73482.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "46dbcb828cdf66eb8d909b5c0a924390",
+      "new_hash": "f217aeaf5a9b56fdd27e8a7fbbec3469",
+      "error": null
+    },
+    {
+      "path": "17C895A4-F4611-574C6567.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "559a9d983ccaedb918f329b4ec2318f4",
+      "new_hash": "513452ca43e2b5ec81eed791b89551c4",
+      "error": null
+    },
+    {
+      "path": "19C9920D-F462B-DEFDF3D8.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "55f6ead4be7ce8a9dc5d70225fbebad6",
+      "new_hash": "7935687cf9d7dc9dc2b0097dcc13b7f4",
+      "error": null
+    },
+    {
+      "path": "1C368FFE-F42BD-D759686C.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "872136ccbfad4a40ec7d18bf83d4b3b0",
+      "new_hash": "9d09c5b7e689a0f5347c6a2e49b6b81b",
+      "error": null
+    },
+    {
+      "path": "1CBCC5D6-F4458-755C6468.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "0eb21166734a4e509b74a6c9a5cecf7c",
+      "new_hash": "15c0d912a898d86c9cb6c980c7bb38e7",
+      "error": null
+    },
+    {
+      "path": "1F86A354-F42AD-D96C01F8.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "d9d34847b5c2aedfba27e45f4152311d",
+      "new_hash": "9310a736ee2cd168742143b8ede958a6",
+      "error": null
+    },
+    {
+      "path": "2133DB58-F45F6-57CEAFC0.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "d0fc84124b612354e5903d3b5e4bca86",
+      "new_hash": "b36d27aa0340b6d5e46274b1483abf8c",
+      "error": null
+    },
+    {
+      "path": "21BE0682-F42C4-46DA02B6.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "5efc3c21197287909f6be45578b5bf92",
+      "new_hash": "f530fe14aa961f8180f50558311765c8",
+      "error": null
+    },
+    {
+      "path": "22AC6A6A-F45CB-4CFC4CD1.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "08ba4748621ba445c3e62c814a900a3a",
+      "new_hash": "cb940858ec616c05b2866e9f5b485492",
+      "error": null
+    },
+    {
+      "path": "23B4806C-F45D2-CC01FB56.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "efad97977a77c3d5f8a064bf846b8b3b",
+      "new_hash": "97a33748c2130b74b7ddddae9f5e8f26",
+      "error": null
+    },
+    {
+      "path": "24705216-F4608-D3BB02AA.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "d7be81c94d26db5871971b5df688c6b2",
+      "new_hash": "65dca44b9358a057e902f7144c7a4150",
+      "error": null
+    },
+    {
+      "path": "282B8268-F43A2-F49EE280.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "ad186aa13b39527a4f46edc6a1c90ffc",
+      "new_hash": "80e92ad25381d954ad5b78ffc8f1b572",
+      "error": null
+    },
+    {
+      "path": "2C48C76E-F42BE-1E214CA1.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "5eedbad00472dc03608c85f6d8809bb8",
+      "new_hash": "02da775a12b6ea1b81c81844f2b5dc6c",
+      "error": null
+    },
+    {
+      "path": "2C4D18A7-F45E1-65DD8717.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "13001864d7db06b219a4d080292e0f2b",
+      "new_hash": "d7f35effed5220429f4f1802f764bcd5",
+      "error": null
+    },
+    {
+      "path": "2D85ABA5-F45C7-1638D7E6.html",
+      "status": "skipped",
+      "original_encoding": "utf-8",
+      "detected_encoding": "utf-8",
+      "original_hash": "9e241465c049f2eecf151a6d8bcade15",
+      "new_hash": "9e241465c049f2eecf151a6d8bcade15",
+      "error": null
+    },
+    {
+      "path": "34822337-F42AA-90F528B5.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "007935aae1afec60a4bfec95b985325e",
+      "new_hash": "56cb5889e5c922edf7e57124550c48c0",
+      "error": null
+    },
+    {
+      "path": "360BA754-F466D-72D2651C.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "691e1c9801244455f1a7a2aac927bac7",
+      "new_hash": "5c296d5f9b17990c5c91da3ae7b8517a",
+      "error": null
+    },
+    {
+      "path": "3B613833-F4244-5D2A14A0.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "e7eaa90ff74159fbdc7ad960154543f9",
+      "new_hash": "c36f14e0d1f5c765775cbc30e7ee8d35",
+      "error": null
+    },
+    {
+      "path": "3C969702-F4372-49385C8D.html",
+      "status": "converted",
+      "original_encoding": "windows-1251",
+      "detected_encoding": "utf-8",
+      "original_hash": "4b0876787e68edfddd62c3c8f49950e1",
+      "new_hash": "8ca6146206797063a68bf9303577b3fc",
+      "error": null
+    }
+  ]
+}
