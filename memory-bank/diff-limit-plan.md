@@ -4,6 +4,7 @@
 | --- | --- | --- | --- | --- | --- |
 | 2025-10-05T00:00Z / Протокол DOC-ADAPT | Документация | `memory-bank/MB-02_RABOCHIE_PRINCIPY.md`, `DOROZHNAYA_KARTA.md`, `memory-bank/diff-limit-plan.md` | 3 files, 25 insertions (+) | ✅ | Добавлено правило адаптивного прощупывания лимита diff и создан журнал. |
 | 2025-10-05T10:40Z / Подготовка D2 GUID F* | Перекодировка HTML | `F47*.html` (первая подсерия) | 12 files, 1210 insertions(+), 1186 deletions(-) | ✅ | Стартовый блок на 12 файлов прошёл, стратегия «обстукивания туннеля» подтверждена; обновили `safe_bound_html_guid` и зафиксировали логи `logs/reencode-20251003T095151Z.json`, `logs/check_utf8-20251003T095227Z.json`. |
+| 2025-10-03T10:02Z / Этап D2 GUID F47x | Перекодировка HTML | `F4792.html`…`F47BA.html`, `DOROZHNAYA_KARTA.md` | 13 files, 1547 insertions(+), 1545 deletions(-) | ✅ | Подсерия `F47x` закрыта: подтвердили безопасный объём (12 файлов), логи `logs/reencode-20251003T100140Z.json`, `logs/check_utf8-20251003T100152Z.json`, план обновлён. |
 | 2025-10-02T15:58Z / Этап D2 GUID D–E | Перекодировка HTML | `D02DBF37-F46B9-834FCE15.html`…`EF55077A-F45BC-9F9EDC1A.html` | 15 files, 1475 insertions(+), 1475 deletions(-) | ✅ | Партия `[DE]*.html`, дифф симметричный, укладывается в лимит. Следующая калибровка — для `F*`. |
 
 ## Текущие ориентиры
