@@ -295,6 +295,8 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-10-03T19:41:52Z | D2 — перекодировал финальный блок `F48AB.html`…`F48ED.html` (10 файлов) | `python tools/reencode.py --paths F48AB.html … F48ED.html --limit 200` → `logs/reencode-20251003T194152Z.json`; `rg -n "windows-1251" F48*.html` → пусто | ✅ Подсерия `F48x` полностью в UTF-8, мета-теги обновлены. |
 | 2025-10-03T19:42:16Z | D2 — подтвердил кодировку и заголовки финального блока `F48x` | `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F48AB.html … F48ED.html)` → `logs/check_utf8-20251003T194210Z.json`; `python -m http.server 8000` + `curl -I` по `F48AB.html`, `F48E0.html`, `F48ED.html` | ✅ Проверки прошли, готов к подсерии `F49x`. |
 | 2025-10-03T19:52:13Z | D2 — перекодировал подсерии `F4902.html` и `F49ED.html`, подтвердил UTF-8 | `python tools/reencode.py --paths F4902.html F49ED.html` → `logs/reencode-20251003T195158Z.json`; `python - <<'PY'` (замена `charset=windows-1251` → `charset=utf-8`); `rg -n "windows-1251" F4902.html F49ED.html`; `python tools/check_utf8.py --no-manifest --scope F4902.html --scope F49ED.html` → `logs/check_utf8-20251003T195207Z.json`; `python -m http.server 8000` + `curl -I` по `F4902.html`, `F49ED.html` | ✅ Подсерия `F49x` подтверждена, следующая партия — `F4Ax`. |
+| 2025-10-03T20:03:47Z | D2 — перекодировал блок `F4A11.html`…`F4A46.html` (12 файлов) | `python tools/reencode.py --paths F4A11.html … F4A46.html` → `logs/reencode-20251003T200347Z.json`; `python - <<'PY'` (замена `charset=windows-1251` → `charset=utf-8` в партии); `rg -n "windows-1251" F4A11.html … F4A46.html` | ✅ Партия переведена в UTF-8, `safe_bound_html_guid` подтверждён. |
+| 2025-10-03T20:04:22Z | D2 — подтвердил кодировку блока `F4A11.html`…`F4A46.html` | `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F4A11.html … F4A46.html)` → `logs/check_utf8-20251003T200422Z.json`; ручной просмотр `F4A11.html`, `F4A29.html`, `F4A46.html` | ✅ Проверки прошли, следующая партия — `F4A47.html`…`F4A99.html`. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -324,9 +326,9 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ C3: HTTrack-артефакты удалены, README отражает новую структуру.
 - ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
-- ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*`, `index4*`/`print4*`, `index5*`/`print5*`, `index6*`/`print6*`, `index7*`/`print7*`, `index8*`/`print8*`, `index9*`/`print9*`, `indexa*`/`printa*`, `indexb*`/`printb*`, `indexc*`/`printc*`, `indexd*`/`printd*`, `indexe*`/`printe*`, `indexf*`/`printf*` и GUID-файлы `0*`–`F49*` перекодированы, впереди оставшиеся GUID-файлы `F*`.
+- ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*`, `index4*`/`print4*`, `index5*`/`print5*`, `index6*`/`print6*`, `index7*`/`print7*`, `index8*`/`print8*`, `index9*`/`print9*`, `indexa*`/`printa*`, `indexb*`/`printb*`, `indexc*`/`printc*`, `indexd*`/`printd*`, `indexe*`/`printe*`, `indexf*`/`printf*` и GUID-файлы `0*`–`F4A46` перекодированы, впереди оставшиеся GUID-файлы `F*`.
 
-**Следующий шаг:** D2 — перекодировать GUID-файлы подсерии `F4Ax` (далее — `F4Cx`, `F4Dx`…).
+**Следующий шаг:** D2 — перекодировать следующую подсерию `F4A47.html`…`F4A99.html`, затем перейти к `F4AA1.html`…
 
 #### План партии `F*` (активен)
 
@@ -337,6 +339,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - **Блок 3a (✅ выполнено):** `F4833.html`…`F486E.html` — 12 файлов, подтверждён безопасный объём; логи `logs/reencode-20251003T122902Z.json`, `logs/check_utf8-20251003T122949Z.json`.
 - **Блок 3b (✅ выполнено):** `F4876.html`…`F48ED.html` — финальная подсерия перекодирована и проверена (`logs/reencode-20251003T194152Z.json`, `logs/check_utf8-20251003T194210Z.json`).
 - **Блок 4 (✅ выполнено):** `F4902.html`…`F49ED.html` — подтверждён перевод в UTF-8 (`logs/reencode-20251003T195158Z.json`, `logs/check_utf8-20251003T195207Z.json`).
+- **Блок 5 (✅ выполнено):** `F4A11.html`…`F4A46.html` — партия на 12 файлов, логи `logs/reencode-20251003T200347Z.json`, `logs/check_utf8-20251003T200422Z.json`.
 - После каждого блока обновляем таблицу прогресса и журнал лимитов.
 
 ### Быстрый старт сессии
