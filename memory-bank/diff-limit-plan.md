@@ -8,6 +8,7 @@
 | 2025-10-03T12:29Z / Этап D2 GUID F48x (партия 1) | Перекодировка HTML | `F4833.html`…`F486E.html`, `DOROZHNAYA_KARTA.md` | 13 files, 984 insertions(+), 982 deletions(-) | ✅ | Партия на 12 файлов уложилась в лимит; charset обновлён, логи `logs/reencode-20251003T122902Z.json`, `logs/check_utf8-20251003T122949Z.json`. |
 | 2025-10-03T13:31Z / Этап D2 GUID F48x (партия 2) | Перекодировка HTML | `F4876.html`…`F48A9.html`, `DOROZHNAYA_KARTA.md` | 14 files, 1264 insertions(+), 1262 deletions(-) | ✅ | Партия `F4876`…`F48A9` прошла без превышения лимита; зафиксированы `logs/reencode-20251003T133116Z.json`, `logs/check_utf8-20251003T133135Z.json`, впереди завершающие `F48AB.html`…`F48ED.html`. |
 | 2025-10-02T15:58Z / Этап D2 GUID D–E | Перекодировка HTML | `D02DBF37-F46B9-834FCE15.html`…`EF55077A-F45BC-9F9EDC1A.html` | 15 files, 1475 insertions(+), 1475 deletions(-) | ✅ | Партия `[DE]*.html`, дифф симметричный, укладывается в лимит. Следующая калибровка — для `F*`. |
+| 2025-10-03T19:52Z / Этап D2 GUID F49x | Перекодировка HTML | `F4902.html`, `F49ED.html`, `DOROZHNAYA_KARTA.md`, `memory-bank/diff-limit-plan.md` | 4 files, 370 insertions(+), 366 deletions(-) | ✅ | Мини-партия на 2 файла подтверждает запас по лимиту; журнал и дорожная карта обновлены, далее планируем `F4Ax`. |
 
 ## Текущие ориентиры
 
