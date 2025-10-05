@@ -13,6 +13,7 @@
 | 2025-10-03T20:21Z / Этап D2 GUID F4Ax (партия 2) | Перекодировка HTML | `F4AA1.html`…`F4ACB.html`, `DOROZHNAYA_KARTA.md` | 12 files, 612 insertions(+), 612 deletions(-) | ✅ | Подтвердили партию `F4AA1`…`F4ACB`: обновлены charset и логи `logs/reencode-20251003T202056Z.json`, `logs/check_utf8-20251003T202127Z.json`; следующий блок `F4AD6.html`…`F4AFC`. |
 | 2025-10-03T20:27Z / Этап D2 GUID F4Ax (партия 3) | Перекодировка HTML | `F4AD6.html`…`F4AFC.html`, `DOROZHNAYA_KARTA.md`, `memory-bank/diff-limit-plan.md` | 15 files, 1205 insertions(+), 1202 deletions(-) | ✅ | Партия на 13 файлов уложилась в лимит; charset обновлён, логи `logs/reencode-20251003T202745Z.json`, `logs/check_utf8-20251003T202812Z.json`, далее `F4C14.html`…`F4C53.html`. |
 | 2025-10-04T13:47Z / Этап D2 GUID F4Cx (партия 1) | Перекодировка HTML | `F4C14.html`…`F4C53.html`, `DOROZHNAYA_KARTA.md` | 13 files, 1214 insertions(+), 1202 deletions(-) | ✅ | Партия на 12 файлов прошла в пределах лимита; charset обновлён, логи `logs/reencode-20251004T134755Z.json`, `logs/check_utf8-20251004T134809Z.json`, следующий блок `F4C54.html`…`F4CED.html`. |
+| 2025-10-04T14:08Z / Этап D2 GUID F4Cx (партия 2) | Перекодировка HTML | `F4C54.html`…`F4CED.html`, `DOROZHNAYA_KARTA.md` | 14 files, 1269 insertions(+), 1267 deletions(-) | ✅ | Партия на 12 файлов уложилась в лимит; зафиксированы `logs/reencode-20251004T140846Z.json`, `logs/check_utf8-20251004T140857Z.json`, следующий шаг — одиночный `F4CF5.html`. |
 
 ## Текущие ориентиры
 
