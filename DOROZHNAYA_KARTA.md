@@ -301,6 +301,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-10-03T20:21:27Z | D2 — перекодировал подсерию `F4AA1.html`…`F4ACB.html` и синхронизировал мета-charset | `python tools/reencode.py --paths F4AA1.html … F4ACB.html --limit 200` → `logs/reencode-20251003T202056Z.json`; `perl -0pi -e 's/charset=windows-1251/charset=utf-8/g'` по партии; `rg -n "windows-1251" F4AA1.html … F4ACB.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F4AA1.html … F4ACB.html)` → `logs/check_utf8-20251003T202127Z.json`; ручной просмотр `F4AA1.html`, `F4AC0.html`, `F4ACB.html` | ✅ Подсерия `F4AA1.html`…`F4ACB.html` подтверждена, следующая партия — `F4AD6.html`…`F4AFC`. |
 | 2025-10-03T20:27:45Z | D2 — перекодировал подсерию `F4AD6.html`…`F4AFC.html` и обновил мета-charset | `python tools/reencode.py --paths F4AD6.html … F4AFC.html --limit 200` → `logs/reencode-20251003T202745Z.json`; `perl -0pi -e 's/charset=windows-1251/charset=utf-8/g'` по партии; `rg -n "windows-1251" F4AD6.html … F4AFC.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F4AD6.html … F4AFC.html)` → `logs/check_utf8-20251003T202812Z.json`; `python -m http.server 8000` + `curl -I` по `F4AD6.html`, `F4AFA.html` | ✅ Подсерия `F4AD6.html`…`F4AFC.html` зафиксирована, готовим блок `F4C14.html`…`F4C53.html`. |
 | 2025-10-04T13:47:55Z | D2 — перекодировал подсерию `F4C14.html`…`F4C53.html` и синхронизировал charset | `python tools/reencode.py --paths F4C14.html … F4C53.html --limit 200` → `logs/reencode-20251004T134755Z.json`; `perl -0pi -e 's/charset=windows-1251/charset=utf-8/g'` по партии; `rg -n "windows-1251" F4C14.html … F4C53.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F4C14.html … F4C53.html)` → `logs/check_utf8-20251004T134809Z.json`; ручной просмотр `F4C14.html`, `F4C3F.html` | ✅ Партия `F4C14.html`…`F4C53.html` перекодирована, далее блок `F4C54.html`…`F4CED.html`. |
+| 2025-10-04T14:08:46Z | D2 — перекодировал подсерию `F4C54.html`…`F4CED.html` и обновил meta-charset | `python tools/reencode.py --paths F4C54.html … F4CED.html --limit 150` → `logs/reencode-20251004T140846Z.json`; `python - <<'PY'` (замена `charset=windows-1251` → `charset=utf-8`); `rg -n "windows-1251" F4C54.html … F4CED.html`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' F4C54.html … F4CED.html)` → `logs/check_utf8-20251004T140857Z.json`; `sed -n '1,20p' F4C54.html`, `sed -n '1,20p' F4CD0.html` | ✅ Подсерия `F4C54.html`…`F4CED.html` подтверждена в UTF-8, следующий шаг — одиночный `F4CF5.html`. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
@@ -332,7 +333,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
 - ▶️ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*`, `index4*`/`print4*`, `index5*`/`print5*`, `index6*`/`print6*`, `index7*`/`print7*`, `index8*`/`print8*`, `index9*`/`print9*`, `indexa*`/`printa*`, `indexb*`/`printb*`, `indexc*`/`printc*`, `indexd*`/`printd*`, `indexe*`/`printe*`, `indexf*`/`printf*` и GUID-файлы `0*`–`F4C53` перекодированы, впереди оставшиеся GUID-файлы `F*`.
 
-**Следующий шаг:** D2 — подготовить партию `F4C54.html`…`F4CED.html`, затем закрыть `F4CF5.html` и перейти к серии `F4D*`.
+**Следующий шаг:** D2 — перекодировать одиночный `F4CF5.html`, затем перейти к серии `F4D*`.
 
 #### План партии `F*` (активен)
 
@@ -347,6 +348,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - **Блок 6 (✅ выполнено):** `F4A47.html`…`F4A99.html` — партия на 12 файлов, логи `logs/reencode-20251003T201039Z.json`, `logs/check_utf8-20251003T201048Z.json`.
 - **Блок 7 (✅ выполнено):** `F4AA1.html`…`F4ACB.html` — партия на 12 файлов, логи `logs/reencode-20251003T202056Z.json`, `logs/check_utf8-20251003T202127Z.json`.
 - **Блок 8 (✅ выполнено):** `F4AD6.html`…`F4AFC.html` — партия на 13 файлов, логи `logs/reencode-20251003T202745Z.json`, `logs/check_utf8-20251003T202812Z.json`; следующая цель `F4C14.html`…`F4C53.html`.
+- **Блок 9 (✅ выполнено):** `F4C14.html`…`F4CED.html` — партии на 12 файлов, логи `logs/reencode-20251004T134755Z.json`, `logs/reencode-20251004T140846Z.json`, `logs/check_utf8-20251004T134809Z.json`, `logs/check_utf8-20251004T140857Z.json`.
 - После каждого блока обновляем таблицу прогресса и журнал лимитов.
 
 ### Быстрый старт сессии
