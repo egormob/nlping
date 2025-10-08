@@ -77,7 +77,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | D0 | Написать `tools/reencode.py` (CP1251 → UTF-8) + модульные тесты `tools/tests/test_reencode.py`. | Проверка: `pytest tools/tests/test_reencode.py`. | ✅ Выполнено — скрипт перекодировки и тесты добавлены, проверка `pytest tools/tests/test_reencode.py`. |
 | D1 | Первая партия (корневые HTML, RSS, критичные страницы). | Проверки: `tools/reencode.py`, `rg -n "windows-1251"`, ручной просмотр. | ✅ Выполнено — перекодированы корневые страницы, RSS и ключевые лендинги (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`). |
 | D2…Dn | Остальные директории (`p/0*`, `p/1*`, …) — не более 150 файлов за итерацию. | Проверки: `tools/check_utf8.py --scope <dir>`, выборка страниц. | ✅ Выполнено — весь массив HTML перекодирован и подтверждён; итоговый прогон `tools/check_utf8.py --manifest tools/url_manifest.txt` сохранён в `logs/check_utf8-20251008T105810Z.json`. |
-| Dlast | Финальная валидация: `rg -n "windows-1251" .` → пусто; полный прогон `tools/check_utf8.py --manifest`. | Артефакты: лог проверки, обновлённые контрольные суммы. | ⏳ Не начато. |
+| Dlast | Финальная валидация: `rg -n "windows-1251" .` → пусто; полный прогон `tools/check_utf8.py --manifest`. | Артефакты: лог проверки, обновлённые контрольные суммы. | ✅ Выполнено — `rg -n "windows-1251" -g'*.html'` (пусто), `python tools/check_utf8.py --manifest tools/url_manifest.txt` → `logs/check_utf8-20251008T182250Z.json`, `python tools/generate_md5_baseline.py` обновил `snapshot/baseline_md5.txt.gz`. |
 
 ### Этап E. Деплой и верификация
 
@@ -235,7 +235,7 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 
 **Сделанные микро-шаги (39/?)**: перекодировка и обновление мета-тегов `index0*`/`print0*`, проверка `check_utf8` для серии `0*`, перекодировка серии `index1*`/`print1*`, проверки `check_utf8` и ручной просмотр для серии `1*`, перекодировка `index2*`/`print2*`, автоматическая и ручная проверка серии `2*`, перекодировка `index3*`/`print3*`, автоматическая и ручная проверка серии `3*`, перекодировка серии `index4*`/`print4*`, автоматическая и ручная проверка серии `4*`, перекодировка серии `index5*`/`print5*`, автоматическая и ручная проверка серии `5*`, перекодировка серии `index6*`/`print6*`, автоматическая и ручная проверка серии `6*`, перекодировка серии `index7*`/`print7*`, автоматическая и ручная проверка серии `7*`, перекодировка серии `index8*`/`print8*`, автоматическая и ручная проверка серии `8*`, перекодировка серии `index9*`/`print9*`, автоматическая и ручная проверка серии `9*`, перекодировка серии `indexa*`/`printa*`, автоматическая и ручная проверка серии `a*`, перекодировка серии `indexb*`/`printb*`, автоматическая и ручная проверка серии `b*`, перекодировка серии `indexc*`/`printc*`, автоматическая и ручная проверка серии `c*`, перекодировка серии `indexd*`/`printd*`, автоматическая и ручная проверка серии `d*`, перекодировка серии `indexe*`/`printe*`, автоматическая и ручная проверка серии `e*`, перекодировка серии `indexf*`/`printf*`, автоматическая и ручная проверка серии `f*`, перекодировка и проверка GUID-файлов с префиксами `0*`–`3*`, `4*`–`6*`, `7*`–`9*`, `A*`–`C*`, перекодировка и проверка подсерий `F47x`, `F48x`, перекодировка и проверка `F4CF5.html`, перекодировка и проверка блока `F4D10.html`…`F4DFF.html`, перекодировка и проверка кластера `F0*`/`F2*`, перекодировка и проверка одиночных GUID `F5*`/`F8*`/`F9*`/`FC*`, перекодировка тематических лендингов (`alphabet.html`…`skazki2012.html`), перекодировка и проверка страниц `F47C1.html`…`F47E4.html`, `F47D4.html`, `F47DA.html`, `F47DE.html`, `F47E3.html`, `ask46c6.html`, `blondy_strategy.html`, `spiralnaya_dinamika_vvedenie.html` и подтверждение через `check_utf8` и ручной просмотр, финальный контрольный прогон `tools/check_utf8.py --manifest tools/url_manifest.txt` перед стартом шага Dlast (`logs/check_utf8-20251008T105810Z.json`).
 
-**Оставшиеся микро-шаги:** пройти этап Dlast — глобально проверить отсутствие `windows-1251` (`rg -n "windows-1251" -g'*.html'`), при необходимости обновить baseline контрольных сумм (`python tools/generate_md5_baseline.py`) и задокументировать результаты перед стартом этапа E.
+**Оставшиеся микро-шаги:** нет — этап D2 закрыт, финальная валидация зафиксирована (см. раздел Dlast) и можно переходить к этапу E.
 
 ## Быстрый протокол (Memory → Roadmap → Instruction)
 
@@ -319,7 +319,19 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 | 2025-10-07T17:17:12Z | D2 — подтвердил UTF-8 для одиночных GUID | `python tools/check_utf8.py --no-manifest --scope F5576ACF-F4601-3A7A13DF.html --scope F8098E52-F4631-38207BC3.html --scope F9505086-F45DB-F1785BE2.html --scope FCFECF83-F46D5-7B58EE90.html` → `logs/check_utf8-20251007T171712Z.json`; `python -m http.server 8000` + `curl -I` по `F5576ACF-F4601-3A7A13DF.html`, `F8098E52-F4631-38207BC3.html`, `FCFECF83-F46D5-7B58EE90.html` | ✅ Проверки подтвердили корректную отдачу. |
 | 2025-10-08T09:56:18Z | D2 — перекодировал тематические страницы (`blog&page=*.html`, `coaching.html`, `erickson_hypnosis*.html`, `nlp-master.html`, `pages_edit133b.html`, `reality_maker_barselona.html`, `subscribe_*.html`, `trainings_photo_collection.html`, `tricks_of_language*.html`, `tropa_movie.html`, `4Qart.html`) и подтвердил UTF-8 | `python tools/reencode.py --paths 4Qart.html blog&page=2.html … tropa_movie.html` → `logs/reencode-20251008T095552Z.json`; `rg -n "windows-1251" <выборка>`; `python tools/check_utf8.py --no-manifest$(printf ' --scope %s' 4Qart.html blog&page=2.html … tropa_movie.html)` → `logs/check_utf8-20251008T095618Z.json`; просмотр `blog.html`, `subscribe_success.html`, `tropa_movie.html` | ✅ Страницы блога и тематических лендингов переведены в UTF-8, следующий блок — статьи `F47C1.html`…`F47E4.html`, `ask46c6.html`, `blondy_strategy.html`, `spiralnaya_dinamika_vvedenie.html`. |
 | 2025-10-08T10:58:10Z | D2 — финальный контроль по манифесту перед переходом к Dlast | `python tools/check_utf8.py --manifest tools/url_manifest.txt` → `logs/check_utf8-20251008T105810Z.json` (отчёт без замечаний) | ✅ Прогон зафиксирован, готовимся к этапу Dlast. |
+| 2025-10-08T18:22:50Z | Dlast — глобальная проверка UTF-8 и обновление baseline | `rg -n "windows-1251" -g'*.html'` → пусто; `python tools/check_utf8.py --manifest tools/url_manifest.txt` → `logs/check_utf8-20251008T182250Z.json`; `python tools/generate_md5_baseline.py` → `snapshot/baseline_md5.txt.gz` | ✅ Финальная валидация завершена, этап D закрыт, далее переходим к E1. |
 | 2025-09-28T19:10:12Z | C1 — фиксация завершения: корневые HTML и раздел «Видео» работают из корня, наследие hop-трекера удалено | Проверки: `rg -n "my_hop_host" -g'*.html'` → пусто; `rg -n "s\\.nlping\\.ru/sapi/Click\\.js" -g'*.html'` → пусто; `git status -sb` | ✅ Шаг C1 закрыт, следующий этап — перенос ассетов (C2). |
+
+### Шаг Dlast — финальная валидация UTF-8
+
+1. Запустить глобальный поиск `windows-1251` по HTML-файлам (`rg -n "windows-1251" -g'*.html'`).
+2. Прогнать `python tools/check_utf8.py --manifest tools/url_manifest.txt`, сохранить лог в `logs/`.
+3. Обновить baseline контрольных сумм командой `python tools/generate_md5_baseline.py`.
+4. Зафиксировать результаты в дорожной карте и подготовить старт этапа E.
+
+#### Прогресс по шагу Dlast
+
+- 2025-10-08T18:22:50Z — `rg -n "windows-1251" -g'*.html'` (пусто), `python tools/check_utf8.py --manifest tools/url_manifest.txt` → `logs/check_utf8-20251008T182250Z.json`, `python tools/generate_md5_baseline.py` обновил `snapshot/baseline_md5.txt.gz`; этап D закрыт, готов к E1.
 
 #### Архив: чек-лист шага C1 (перенос корневых HTML)
 
@@ -349,8 +361,9 @@ Cloudflare Pages отдаёт статический бэкап сайта `nlpi
 - ✅ D0: `tools/reencode.py` перекодирует HTML/XML в UTF-8, тесты покрывают сценарии успеха/ошибок.
 - ✅ D1: корневые HTML, RSS и ключевые лендинги перекодированы в UTF-8 (`logs/reencode-20250930T070225Z.json`, `logs/check_utf8-20250930T070433Z.json`).
 - ✅ D2: серии `index0*`/`print0*`, `index1*`/`print1*`, `index2*`/`print2*`, `index3*`/`print3*`, `index4*`/`print4*`, `index5*`/`print5*`, `index6*`/`print6*`, `index7*`/`print7*`, `index8*`/`print8*`, `index9*`/`print9*`, `indexa*`/`printa*`, `indexb*`/`printb*`, `indexc*`/`printc*`, `indexd*`/`printd*`, `indexe*`/`printe*`, `indexf*`/`printf*`, все кластеры GUID `0*`–`FCFECF83`, тематические лендинги и спецстраницы перекодированы; итоговый прогон `tools/check_utf8.py --manifest tools/url_manifest.txt` подтвердил отсутствие `windows-1251` в кодовой базе (`logs/check_utf8-20251008T105810Z.json`).
+- ✅ Dlast: финальная валидация пройдена (`rg -n "windows-1251" -g'*.html'` → пусто, `logs/check_utf8-20251008T182250Z.json`, `python tools/generate_md5_baseline.py` обновил `snapshot/baseline_md5.txt.gz`).
 
-**Следующий шаг:** Dlast — выполнить финальную валидацию: `rg -n "windows-1251" -g'*.html'`, при необходимости обновить контрольные суммы (`python tools/generate_md5_baseline.py`), закрепить результаты и подготовить переход к этапу E.
+**Следующий шаг:** E1 — выполнить локальные smoke-тесты (`python tools/check_links.py --manifest tools/url_manifest.txt`, `python tools/check_utf8.py --manifest tools/url_manifest.txt`, ручной просмотр через `python -m http.server`) и задокументировать результаты перед деплоем.
 
 #### План партии `F*` (завершён)
 
