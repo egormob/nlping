@@ -1,2 +1,10 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+favicon/apple-touch-icon.png text diff
+favicon/favicon-16x16.png text diff
+favicon/favicon-32x32.png text diff
+favicon/favicon.ico text diff
+sites/default/files/gulmohar_favicon.ico text diff
+w.nlping.ru/wp-content/uploads/2014/06/ropewalker_isp.jpg text diff
+wp-content/themes/yootheme/vendor/yootheme/theme-wordpress/assets/images/apple-touch-icon.png text diff
+wp-content/themes/yootheme/vendor/yootheme/theme-wordpress/assets/images/favicon.png text diff
