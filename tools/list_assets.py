@@ -19,7 +19,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
 import posixpath
-from urllib.parse import urlparse
+from urllib.parse import unquote, urlparse
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_OUTPUT = PROJECT_ROOT / "artifacts" / "assets.json"
@@ -116,7 +116,9 @@ def resolve_local_path(html_path: Path, url: str) -> Tuple[Optional[str], Option
         return None, None
     if parsed.path == "":
         return None, None
-    raw_path = parsed.path
+    raw_path = unquote(parsed.path)
+    if raw_path.startswith("__+siteAdr+"):
+        return None, None
     try:
         relative_parent = html_path.relative_to(PROJECT_ROOT).parent.as_posix()
     except ValueError:
