@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple
+import posixpath
 from urllib.parse import urlparse
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
@@ -116,13 +117,21 @@ def resolve_local_path(html_path: Path, url: str) -> Tuple[Optional[str], Option
     if parsed.path == "":
         return None, None
     raw_path = parsed.path
-    candidate = (html_path.parent / raw_path).resolve()
+    try:
+        relative_parent = html_path.relative_to(PROJECT_ROOT).parent.as_posix()
+    except ValueError:
+        relative_parent = html_path.parent.as_posix()
+    if relative_parent == ".":
+        relative_parent = ""
+    normalized = posixpath.normpath(posixpath.join("/", relative_parent, raw_path))
+    normalized = normalized.lstrip("/")
+    candidate = PROJECT_ROOT / normalized
+    exists = candidate.exists()
     try:
         relative = candidate.relative_to(PROJECT_ROOT)
-        exists = candidate.exists()
         return str(relative), exists
     except ValueError:
-        return str(candidate), candidate.exists()
+        return str(candidate), exists
 
 
 def iter_html_files(scopes: Iterable[Path]) -> Iterable[Path]:
