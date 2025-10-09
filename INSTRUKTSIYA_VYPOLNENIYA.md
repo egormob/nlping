@@ -76,6 +76,7 @@
 3. Повторить проверки по `https://<project>.pages.dev/` и `https://nlping.ru/` (если домен подключен). Использовать `curl -I` с `Cache-Control: no-cache`.
 4. Зафиксировать результаты в `DOROZHNAYA_KARTA.md` и README.
 5. Настроить охрану: скрипт или GitHub Action, который падает, если в diff появляется `windows-1251`.
+6. Для передачи набора HTTP-запросов см. `cloudflare_request_plan.jsonl` (создаётся `tools/check_links.py --request-plan --request-plan-format jsonl`).
 
 ---
 

@@ -18,7 +18,7 @@ import sys
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Sequence, Tuple
+from typing import Dict, Iterable, List, Optional, Sequence, Set, Tuple
 from urllib.error import HTTPError, URLError
 from urllib.parse import ParseResult, quote, urlparse
 from urllib.request import Request, urlopen
@@ -50,12 +50,14 @@ class AssetCheck:
     exists: Optional[bool]
     http: Optional[HTTPCheck]
     status: str
+    request_path: Optional[str]
 
 
 @dataclass
 class DocumentCheck:
     source: str
     path: str
+    request_path: Optional[str]
     exists: bool
     http: Optional[HTTPCheck]
     assets: List[AssetCheck] = field(default_factory=list)
@@ -98,6 +100,17 @@ def build_parser() -> argparse.ArgumentParser:
         "--output",
         type=Path,
         help="Write detailed JSON report to this path (default: logs/check_links-<timestamp>.json).",
+    )
+    parser.add_argument(
+        "--request-plan",
+        type=Path,
+        help="Write a JSON file listing document and asset HTTP requests to execute remotely.",
+    )
+    parser.add_argument(
+        "--request-plan-format",
+        choices=["json", "jsonl"],
+        default="json",
+        help="Format for the request plan output (default: json).",
     )
     parser.add_argument(
         "--root",
@@ -239,6 +252,7 @@ def analyse_documents(
             doc = DocumentCheck(
                 source=source,
                 path=key,
+                request_path=request_path,
                 exists=path.exists(),
                 http=http_result,
             )
@@ -249,6 +263,8 @@ def analyse_documents(
             seen[key] = doc
         else:
             # If we already saw the document but had no HTTP path earlier, try now.
+            if doc.request_path is None and request_path is not None:
+                doc.request_path = request_path
             if base_url and doc.http is None and request_path is not None:
                 doc.http = try_http(build_http_url(base_url, request_path), timeout)
                 if doc.http and not (doc.http.ok or doc.http.status is None):
@@ -268,6 +284,7 @@ def analyse_documents(
                 asset_http: Optional[HTTPCheck] = None
                 status = "ok"
                 if entry.resolved_path is None:
+                    asset_request_path: Optional[str] = entry.url
                     if include_remote:
                         asset_http = try_http(entry.url, timeout)
                         if asset_http.ok is False:
@@ -279,8 +296,9 @@ def analyse_documents(
                     if entry.exists is False:
                         status = "missing_file"
                         doc.issues.append("missing_asset")
+                    asset_request_path = "/" + entry.resolved_path.replace("\\", "/")
                     if base_url:
-                        asset_url = build_http_url(base_url, "/" + entry.resolved_path.replace("\\", "/"))
+                        asset_url = build_http_url(base_url, asset_request_path)
                         asset_http = try_http(asset_url, timeout)
                         if asset_http.ok is False:
                             status = "http_error"
@@ -293,6 +311,7 @@ def analyse_documents(
                         exists=entry.exists,
                         http=asset_http,
                         status=status,
+                        request_path=asset_request_path,
                     )
                 )
     return list(seen.values())
@@ -336,6 +355,7 @@ def dump_report(
             {
                 "source": doc.source,
                 "path": doc.path,
+                "request_path": doc.request_path,
                 "exists": doc.exists,
                 "http": asdict(doc.http) if doc.http else None,
                 "issues": doc.issues,
@@ -347,6 +367,7 @@ def dump_report(
                         "exists": asset.exists,
                         "status": asset.status,
                         "http": asdict(asset.http) if asset.http else None,
+                        "request_path": asset.request_path,
                     }
                     for asset in doc.assets
                 ],
@@ -355,6 +376,92 @@ def dump_report(
         ],
     }
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+
+def normalise_request_url(path: Optional[str], base_url: Optional[str]) -> Optional[str]:
+    if path is None:
+        return None
+    if path.startswith("http://") or path.startswith("https://"):
+        return path
+    if base_url:
+        return build_http_url(base_url, path)
+    return path
+
+
+def build_request_plan(
+    documents: Sequence[DocumentCheck],
+    base_url: Optional[str],
+) -> List[Dict[str, object]]:
+    plan: List[Dict[str, object]] = []
+    seen: Set[Tuple[str, str]] = set()
+
+    for doc in documents:
+        request_path = doc.request_path or "/" + doc.path.replace("\\", "/")
+        url = normalise_request_url(request_path, base_url)
+        if url:
+            key = ("document", url)
+            if key not in seen:
+                seen.add(key)
+                plan.append(
+                    {
+                        "type": "document",
+                        "document": doc.path,
+                        "path": request_path,
+                        "url": url,
+                        "issues": list(doc.issues),
+                    }
+                )
+        for asset in doc.assets:
+            asset_path = asset.request_path
+            asset_url = normalise_request_url(asset_path, base_url)
+            if not asset_url:
+                continue
+            key = ("asset", asset_url)
+            if key in seen:
+                continue
+            seen.add(key)
+            plan.append(
+                {
+                    "type": "asset",
+                    "document": doc.path,
+                    "category": asset.category,
+                    "original_url": asset.url,
+                    "path": asset_path
+                    if asset_path and not asset_path.startswith(("http://", "https://"))
+                    else None,
+                    "url": asset_url,
+                    "status": asset.status,
+                }
+            )
+    return plan
+
+
+def dump_request_plan(
+    plan: Sequence[Dict[str, object]],
+    output_path: Path,
+    base_url: Optional[str],
+    fmt: str,
+) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if fmt == "jsonl":
+        metadata = {
+            "type": "metadata",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "base_url": base_url,
+            "total_requests": len(plan),
+        }
+        lines = [json.dumps(metadata, ensure_ascii=False)]
+        lines.extend(json.dumps(item, ensure_ascii=False) for item in plan)
+        output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        return
+
+    payload = {
+        "generated_at": datetime.now(timezone.utc).isoformat(),
+        "base_url": base_url,
+        "total_requests": len(plan),
+        "requests": list(plan),
+    }
     output_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
@@ -393,6 +500,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     output_path = args.output or default_log_path()
     dump_report(documents, output_path, args.base, target_sources)
+
+    if args.request_plan:
+        plan = build_request_plan(documents, args.base)
+        dump_request_plan(plan, args.request_plan, args.base, args.request_plan_format)
 
     summary = summarise(documents)
     print(
