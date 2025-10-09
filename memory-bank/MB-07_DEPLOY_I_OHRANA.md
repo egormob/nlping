@@ -6,6 +6,7 @@
 - **Smoke-тест после деплоя:**
   - `python tools/check_links.py --manifest tools/url_manifest.txt --base https://<project>.pages.dev`.
   - `python tools/check_utf8.py --manifest tools/url_manifest.txt --base https://<project>.pages.dev`.
+  - Если требуется передать проверки другому окружению, используй подготовленный список `cloudflare_request_plan.jsonl` (генерится флагами `--request-plan` и `--request-plan-format jsonl`).
   - Повторить для `https://nlping.ru` (когда домен подключён).
 - **Мониторинг:** завести cron/CI-скрипт, который раз в сутки прогоняет `tools/check_utf8.py` и сигнализирует при `windows-1251` или символах `�`.
 - **Охрана в репозитории:** добавить pre-commit/CI шаг, запрещающий появление строки `windows-1251` в новых коммитах.
