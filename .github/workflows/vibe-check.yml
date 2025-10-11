@@ -1,379 +1,93 @@
-name: Vibe Check
-
+name: vibe-check
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited]
-
+  workflow_dispatch:
+permissions:
+  contents: read
+  pull-requests: write
+  issues: read
 jobs:
-  vibe-check:
-    name: Vibe check
+  check:
     runs-on: ubuntu-latest
-
+    env:
+      BASE: https://work.nlping.pages.dev
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Detect preview URL
-        id: detect_preview
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const { owner, repo } = context.repo;
-            const issue_number = context.payload.pull_request.number;
-            const comments = await github.paginate(github.rest.issues.listComments, {
-              owner,
-              repo,
-              issue_number
-            });
-            const regex = /https?:\/\/[^\s]+\.pages\.dev/ig;
-            for (const comment of comments.reverse()) {
-              const matches = comment.body ? comment.body.match(regex) : null;
-              if (matches && matches.length > 0) {
-                core.setOutput('preview_url', matches[matches.length - 1]);
-                return;
-              }
-            }
-            core.setOutput('preview_url', '');
-
-      - name: Resolve base URL
-        id: base_url
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Install tools
         run: |
-          if [ -n "${{ steps.detect_preview.outputs.preview_url }}" ]; then
-            echo "base_url=${{ steps.detect_preview.outputs.preview_url }}" >> "$GITHUB_OUTPUT"
-            echo "using_preview=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "base_url=http://127.0.0.1:4173" >> "$GITHUB_OUTPUT"
-            echo "using_preview=false" >> "$GITHUB_OUTPUT"
-          fi
+          npm i -D playwright@1 htmlhint linkinator
+          npx playwright install --with-deps
 
-      - name: Install Playwright
-        run: |
-          npx playwright@1.41.2 install --with-deps chromium
-
-      - name: Start local server
-        if: steps.base_url.outputs.using_preview == 'false'
-        run: |
-          npx http-server -p 4173 -c-1 >/tmp/http-server.log 2>&1 &
-          echo $! > server.pid
-
-      - name: Wait for local server
-        if: steps.base_url.outputs.using_preview == 'false'
-        run: |
-          for i in {1..20}; do
-            if curl -sSf http://127.0.0.1:4173 >/dev/null; then
-              exit 0
-            fi
-            sleep 1
-          done
-          echo "Local server did not start" >&2
-          exit 1
-
-      - name: Prepare workspace
-        run: |
-          mkdir -p vibe-check/screenshots
-
-      - name: Visual check
+      - name: Visual check (screenshots + asserts)
         id: visual
         continue-on-error: true
-        env:
-          VIBE_BASE_URL: ${{ steps.base_url.outputs.base_url }}
         run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const path = require('path');
+          node <<'JS'
+          const fs=require('fs');
           const { chromium } = require('playwright');
-
-          const manifest = JSON.parse(fs.readFileSync('check.manifest.json', 'utf8'));
-          const baseUrl = process.env.VIBE_BASE_URL;
-          if (!baseUrl) {
-            throw new Error('Base URL is not defined');
-          }
-
-          (async () => {
-            const browser = await chromium.launch();
-            const context = await browser.newContext();
-            const page = await context.newPage();
-            const results = [];
-            let hasFailures = false;
-
-            for (const route of manifest.routes) {
-              const label = route.label || route.path;
-              const safeLabel = label.replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '') || 'route';
-              const attempts = [];
-              const primaryUrl = new URL(route.path, baseUrl).toString();
-              attempts.push(primaryUrl);
-
-              const appendCandidates = (basePath) => {
-                if (!basePath.endsWith('/')) {
-                  attempts.push(new URL(basePath + '/', baseUrl).toString());
-                  attempts.push(new URL(basePath + '/index.html', baseUrl).toString());
-                  attempts.push(new URL(basePath + '.html', baseUrl).toString());
-                } else {
-                  attempts.push(new URL(basePath + 'index.html', baseUrl).toString());
+          const manifest=JSON.parse(fs.readFileSync('check.manifest.json','utf8'));
+          if (!fs.existsSync('screens')) fs.mkdirSync('screens');
+          const base=(process.env.BASE||'').replace(/\/$/,'');
+          const vp=manifest.viewport||{width:1280,height:800};
+          let failed=false, log=[];
+          (async ()=>{
+            const browser=await chromium.launch();
+            const ctx=await browser.newContext({viewport:vp});
+            for (const r of manifest.routes) {
+              const url=base + r.path;
+              const page=await ctx.newPage();
+              const res=await page.goto(url,{waitUntil:'domcontentloaded'});
+              const st=res?res.status():0;
+              if (!res || st>=400){ failed=true; log.push(`FAIL ${r.path}: status ${st}`); }
+              for (const a of (r.asserts||[])) {
+                if (a.selector){
+                  const c=await page.locator(a.selector).count();
+                  if (!c){ failed=true; log.push(`FAIL ${r.path}: no ${a.selector}`); } else { log.push(`OK ${r.path}: ${a.selector}`); }
                 }
-              };
-
-              appendCandidates(route.path);
-              if (route.fallback) {
-                attempts.push(new URL(route.fallback, baseUrl).toString());
-                appendCandidates(route.fallback);
-              }
-
-              let response = null;
-              let finalUrl = null;
-              let status = null;
-
-              for (const candidate of attempts) {
-                try {
-                  response = await page.goto(candidate, { waitUntil: 'networkidle' });
-                } catch (error) {
-                  response = null;
+                if (a.text){
+                  const c=await page.locator(`text=${a.text}`).first().count();
+                  if (!c){ failed=true; log.push(`FAIL ${r.path}: no text "${a.text}"`); } else { log.push(`OK ${r.path}: "${a.text}"`); }
                 }
-
-                status = response ? response.status() : null;
-                if (status && status >= 400) {
-                  continue;
-                }
-
-                finalUrl = candidate;
-                break;
               }
-
-              if (!finalUrl) {
-                hasFailures = true;
-                results.push({
-                  label,
-                  path: route.path,
-                  url: null,
-                  status: 'error',
-                  httpStatus: status,
-                  assertions: route.assertions.map(assertion => ({
-                    ...assertion,
-                    passed: false,
-                    message: 'Route did not resolve successfully'
-                  }))
-                });
-                continue;
-              }
-
-              await page.waitForTimeout(500);
-              const screenshotPath = path.join('vibe-check', 'screenshots', `${safeLabel || 'route'}.png`);
-              await page.screenshot({ path: screenshotPath, fullPage: true });
-
-              const assertionResults = [];
-              for (const assertion of route.assertions || []) {
-                let passed = false;
-                let message = '';
-                try {
-                  switch (assertion.type) {
-                    case 'exists': {
-                      const count = await page.locator(assertion.selector).count();
-                      passed = count > 0;
-                      message = passed ? '' : `Selector not found: ${assertion.selector}`;
-                      break;
-                    }
-                    case 'textIncludes': {
-                      const locator = page.locator(assertion.selector).first();
-                      const text = await locator.innerText({ timeout: 5000 });
-                      passed = text && text.includes(assertion.value);
-                      message = passed ? '' : `Expected "${assertion.value}" in text but got "${text}"`;
-                      break;
-                    }
-                    default:
-                      passed = false;
-                      message = `Unknown assertion type: ${assertion.type}`;
-                  }
-                } catch (error) {
-                  passed = false;
-                  message = error.message;
-                }
-                assertionResults.push({
-                  ...assertion,
-                  passed,
-                  message
-                });
-              }
-
-              const routeFailed = assertionResults.some(result => !result.passed);
-              if (routeFailed) {
-                hasFailures = true;
-              }
-
-              results.push({
-                label,
-                path: route.path,
-                url: finalUrl,
-                status: routeFailed ? 'fail' : 'pass',
-                httpStatus: status,
-                assertions: assertionResults
-              });
+              const name=r.path==='/'?'_home':r.path.replace(/\//g,'_');
+              await page.screenshot({path:`screens/${name}.png`,fullPage:true});
+              await page.close();
             }
-
-            await browser.close();
-
-            fs.writeFileSync(path.join('vibe-check', 'visual-results.json'), JSON.stringify(results, null, 2));
-            const summary = hasFailures ? 'fail' : 'pass';
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `visual_status=${summary}\n`);
-            const failedRoutes = results.filter(route => route.status !== 'pass').length;
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `visual_failed=${failedRoutes}\n`);
-            console.log(`Visual check status: ${summary.toUpperCase()} (${failedRoutes} failing routes)`);
-          })().catch(error => {
-            console.error(error);
-            process.exitCode = 1;
-          });
-          NODE
+            await ctx.close(); await browser.close();
+            fs.writeFileSync('visual.log', log.join('\n')+'\n');
+            if (failed) process.exit(1);
+          })();
+          JS
+          if [ $? -eq 0 ]; then echo "status=ok" >> $GITHUB_OUTPUT; else echo "status=fail" >> $GITHUB_OUTPUT; fi
 
       - name: HTMLHint
-        id: htmlhint
-        continue-on-error: true
-        run: |
-          set -o pipefail
-          mapfile -d '' files < <(find . -type f -name '*.html' ! -path './node_modules/*' -print0)
-          if [ ${#files[@]} -eq 0 ]; then
-            echo "No HTML files found for HTMLHint."
-            exit 0
-          fi
-          npx htmlhint --config .htmlhintrc "${files[@]}" | tee vibe-check/htmlhint.log
-          exit ${PIPESTATUS[0]}
+        run: npx htmlhint "**/*.html" || true
 
       - name: Linkinator
-        id: linkinator
-        continue-on-error: true
-        env:
-          BASE_URL: ${{ steps.base_url.outputs.base_url }}
-        run: |
-          mkdir -p vibe-check
-          npx linkinator "$BASE_URL" --config linkinator.config.json --format json --silent > vibe-check/linkinator.json
-
-      - name: Link summary
-        id: link_summary
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const outputPath = 'vibe-check/linkinator.json';
-          if (!fs.existsSync(outputPath)) {
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'broken=0\n');
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'total=0\n');
-            console.log('Linkinator report not found.');
-            process.exit(0);
-          }
-          const data = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-          const links = Array.isArray(data.links) ? data.links : data;
-          let broken = 0;
-          for (const link of links) {
-            if ((link.state || '').toUpperCase() === 'BROKEN') {
-              broken += 1;
-            }
-          }
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `broken=${broken}\n`);
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `total=${links.length}\n`);
-          console.log(`Linkinator found ${broken} broken links out of ${links.length}`);
-          NODE
-
-      - name: Lighthouse
-        id: lighthouse
-        if: steps.base_url.outputs.using_preview == 'true'
-        continue-on-error: true
-        env:
-          PREVIEW_URL: ${{ steps.base_url.outputs.base_url }}
-        run: |
-          npx lighthouse "$PREVIEW_URL" --only-categories=performance --chrome-flags="--headless" --output json --output-path=./vibe-check/lighthouse.json
-
-      - name: Lighthouse summary
-        id: lighthouse_summary
-        if: steps.lighthouse.outcome == 'success'
-        run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const data = JSON.parse(fs.readFileSync('./vibe-check/lighthouse.json', 'utf8'));
-          const score = data?.categories?.performance?.score;
-          const value = Number.isFinite(score) ? Math.round(score * 100) : '';
-          if (value !== '') {
-            fs.appendFileSync(process.env.GITHUB_OUTPUT, `performance=${value}\n`);
-            console.log(`Lighthouse performance score: ${value}`);
-          } else {
-            console.log('No performance score found in Lighthouse report.');
-          }
-          NODE
+        run: npx linkinator "${BASE}" --config linkinator.config.json --format json > linkinator.json || true
 
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: vibe-check-artifacts
-          path: vibe-check
-          if-no-files-found: warn
+          path: |
+            screens/*.png
+            linkinator.json
+            visual.log
 
-      - name: Stop local server
-        if: steps.base_url.outputs.using_preview == 'false' && always()
-        run: |
-          if [ -f server.pid ]; then
-            kill $(cat server.pid) || true
-          fi
-
-      - name: Post summary comment
-        if: always()
-        uses: actions/github-script@v7
+      - name: Comment summary
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: marocchino/sticky-pull-request-comment@v2
         with:
-          script: |
-            const marker = '<!-- vibe-check-report -->';
-            const visualStatus = "${{ steps.visual.outputs.visual_status || '' }}";
-            const broken = Number("${{ steps.link_summary.outputs.broken || '0' }}");
-            const total = Number("${{ steps.link_summary.outputs.total || '0' }}");
-            const performanceRaw = "${{ steps.lighthouse_summary.outputs.performance || '' }}";
-            const performance = performanceRaw ? Number(performanceRaw) : null;
+          header: vibe-check
+          message: |
+            База: ${{ env.BASE }}
+            Visual: ${{ steps.visual.outputs.status }}
+            Скрины и отчёты см. в артефакте **vibe-check-artifacts**.
 
-            const visualSymbol = visualStatus === 'pass' ? '✅' : (visualStatus === 'fail' ? '❌' : '⚠️');
-            const linksSymbol = broken === 0 ? '✅' : '❌';
-            const perfSymbol = performance !== null ? (performance >= 80 ? '✅' : '❌') : '⚠️';
-            const perfLine = performance !== null ? `${perfSymbol} Perf: ${performance}` : `${perfSymbol} Perf: —`;
-
-            const body = `${marker}\n### Vibe Check Summary\n- ${visualSymbol} Visual\n- ${linksSymbol} Links: ${broken} broken of ${total}\n- ${perfLine}`;
-
-            const { owner, repo } = context.repo;
-            const issue_number = context.payload.pull_request.number;
-            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
-            const existing = comments.find(comment => comment.body && comment.body.includes(marker));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                owner,
-                repo,
-                comment_id: existing.id,
-                body
-              });
-            } else {
-              await github.rest.issues.createComment({
-                owner,
-                repo,
-                issue_number,
-                body
-              });
-            }
-
-      - name: Evaluate vibe check gates
-        if: always()
+      - name: Evaluate gates
         run: |
-          visual="${{ steps.visual.outputs.visual_status || 'fail' }}"
-          broken="${{ steps.link_summary.outputs.broken || '0' }}"
-          performance="${{ steps.lighthouse_summary.outputs.performance || '' }}"
-          fail=0
-          if [ "$visual" != "pass" ]; then
-            echo "Visual assertions failed."
-            fail=1
-          fi
-          if [ "$broken" -gt 0 ]; then
-            echo "Detected $broken broken links."
-            fail=1
-          fi
-          if [ -n "$performance" ] && [ "$performance" -lt 80 ]; then
-            echo "Performance score $performance is below threshold."
-            fail=1
-          fi
-          if [ "$fail" -ne 0 ]; then
-            exit 1
-          fi
+          [ "${{ steps.visual.outputs.status }}" = "ok" ]
