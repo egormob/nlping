@@ -345,8 +345,12 @@ html { background-color:#FEF375;}
 }
 
 .left-column .left-content {
-    background:url("../images/left-column-center.png") ; 
+    background:url("../images/left-column-center.png") ;
     padding: 0 15px;
+}
+
+.left-column .left-content iframe[src*="lp.nlping.ru/form-mini"] {
+    display: none;
 }
 
 .left-column .one-product {
