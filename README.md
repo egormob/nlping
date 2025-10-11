@@ -36,6 +36,13 @@ python -m http.server 8000
 The link and UTF-8 scripts accept additional `--scope` arguments for the
 folders you edit. Keep the generated logs under `logs/` for reference.
 
+## Browser agent prompt
+
+The full brief for the Cloudflare verification run is stored in
+`browser-agent-prompt.md`. Copy its contents when preparing a new manual
+check with the browser agent and include the resulting Markdown report in
+the repository once the review is complete.
+
 ## Tooling setup
 
 Install Python dependencies (use a virtualenv if possible) and run the unit
