@@ -1,3 +1,0 @@
-# Rewrite clean blog pagination queries to static snapshots
-/blog?page=1 /blog.html 200
-/blog?page=:page /blog&page=:page.html 200
