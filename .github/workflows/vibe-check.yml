@@ -17,7 +17,7 @@ jobs:
         with: { node-version: '20' }
       - name: Install tools
         run: |
-          npm i -D playwright@1 htmlhint linkinator
+          npm i -D playwright@1 htmlhint
           npx playwright install --with-deps
 
       - name: Visual check (screenshots + asserts)
@@ -31,13 +31,60 @@ jobs:
           if (!fs.existsSync('screens')) fs.mkdirSync('screens');
           const base=(process.env.BASE||'').replace(/\/$/,'');
           const vp=manifest.viewport||{width:1280,height:800};
-          let failed=false, log=[];
+          let failed=false;
+          const log=[];
+          const assetFailures=[];
+          const assetLog=[];
+          const linkFailures=[];
+          const linkLog=[];
+          const origin = new URL(base || 'http://localhost').origin;
+
+          async function checkLink(url){
+            const methods=['HEAD','GET'];
+            let lastError='';
+            for (const method of methods){
+              try {
+                const res=await fetch(url,{method,redirect:'follow'});
+                if (res.ok) {
+                  return { ok:true, status:res.status };
+                }
+                lastError=`${res.status} ${res.statusText}`;
+                if (method === 'GET') {
+                  return { ok:false, error:lastError };
+                }
+              } catch (err){
+                lastError=err.message;
+                if (method === 'GET') {
+                  return { ok:false, error:lastError };
+                }
+              }
+            }
+            return { ok:false, error:lastError || 'Unknown error' };
+          }
+
           (async ()=>{
             const browser=await chromium.launch();
             const ctx=await browser.newContext({viewport:vp});
             for (const r of manifest.routes) {
               const url=base + r.path;
               const page=await ctx.newPage();
+              page.on('response', async (res)=>{
+                try {
+                  const req=res.request();
+                  const type=req.resourceType();
+                  if (!['stylesheet','script','image'].includes(type)) return;
+                  const status=res.status();
+                  if (status >= 400){
+                    const entry=`${status} ${req.url()}`;
+                    failed=true;
+                    assetFailures.push({ route:r.path, status, url:req.url() });
+                    assetLog.push(`FAIL ${r.path}: asset ${entry}`);
+                    log.push(`FAIL ${r.path}: asset ${entry}`);
+                  }
+                } catch (err) {
+                  assetLog.push(`WARN ${r.path}: asset check error ${err.message}`);
+                }
+              });
               const res=await page.goto(url,{waitUntil:'domcontentloaded'});
               const st=res?res.status():0;
               if (!res || st>=400){ failed=true; log.push(`FAIL ${r.path}: status ${st}`); }
@@ -51,22 +98,60 @@ jobs:
                   if (!c){ failed=true; log.push(`FAIL ${r.path}: no text "${a.text}"`); } else { log.push(`OK ${r.path}: "${a.text}"`); }
                 }
               }
+              const anchors=await page.$$eval('a[href]', els => els.map(el => el.href));
+              const sameDomainLinks=[...new Set(anchors.filter(href => {
+                try {
+                  const u=new URL(href);
+                  return u.origin === origin;
+                } catch (err) {
+                  return false;
+                }
+              }))];
+              for (const link of sameDomainLinks){
+                const result=await checkLink(link);
+                if (!result.ok){
+                  failed=true;
+                  linkFailures.push({ route:r.path, url:link, error:result.error });
+                  const entry=`${link} (${result.error||'status >=400'})`;
+                  linkLog.push(`FAIL ${r.path}: link ${entry}`);
+                  log.push(`FAIL ${r.path}: link ${entry}`);
+                } else {
+                  linkLog.push(`OK ${r.path}: link ${link} -> ${result.status}`);
+                }
+              }
               const name=r.path==='/'?'_home':r.path.replace(/\//g,'_');
               await page.screenshot({path:`screens/${name}.png`,fullPage:true});
               await page.close();
             }
             await ctx.close(); await browser.close();
             fs.writeFileSync('visual.log', log.join('\n')+'\n');
+            if (assetLog.length) fs.writeFileSync('assets.log', assetLog.join('\n')+'\n'); else fs.writeFileSync('assets.log','OK\n');
+            if (linkLog.length) fs.writeFileSync('links.log', linkLog.join('\n')+'\n'); else fs.writeFileSync('links.log','OK\n');
+            const summary={
+              visualOk: !failed,
+              assetFailures: assetFailures.length,
+              linkFailures: linkFailures.length,
+              linkSamples: linkFailures.slice(0,3).map(item => item.url),
+              assetSamples: assetFailures.slice(0,3).map(item => `${item.status} ${item.url}`)
+            };
+            fs.writeFileSync('visual-summary.json', JSON.stringify(summary,null,2));
             if (failed) process.exit(1);
           })();
           JS
-          if [ $? -eq 0 ]; then echo "status=ok" >> $GITHUB_OUTPUT; else echo "status=fail" >> $GITHUB_OUTPUT; fi
+          exit_code=$?
+          node <<'JS' >> process.env.GITHUB_OUTPUT
+          const fs=require('fs');
+          const summary=JSON.parse(fs.readFileSync('visual-summary.json','utf8'));
+          console.log(`status=${summary.visualOk?'ok':'fail'}`);
+          console.log(`asset_failures=${summary.assetFailures}`);
+          console.log(`link_failures=${summary.linkFailures}`);
+          console.log(`asset_samples=${summary.assetSamples.join(' | ')}`);
+          console.log(`link_samples=${summary.linkSamples.join(' | ')}`);
+          JS
+          exit $exit_code
 
       - name: HTMLHint
         run: npx htmlhint "**/*.html" || true
-
-      - name: Linkinator
-        run: npx linkinator "${BASE}" --config linkinator.config.json --format json > linkinator.json || true
 
       - name: Upload artifacts
         if: always()
@@ -75,8 +160,10 @@ jobs:
           name: vibe-check-artifacts
           path: |
             screens/*.png
-            linkinator.json
             visual.log
+            assets.log
+            links.log
+            visual-summary.json
 
       - name: Comment summary
         if: ${{ github.event_name == 'pull_request' }}
@@ -86,8 +173,12 @@ jobs:
           message: |
             База: ${{ env.BASE }}
             Visual: ${{ steps.visual.outputs.status }}
+            Assets: ${{ steps.visual.outputs.asset_failures }} fails${{ steps.visual.outputs.asset_samples && steps.visual.outputs.asset_failures != '0' && format(' ({0})', steps.visual.outputs.asset_samples) || '' }}
+            Links: ${{ steps.visual.outputs.link_failures }} broken${{ steps.visual.outputs.link_samples && steps.visual.outputs.link_failures != '0' && format(' ({0})', steps.visual.outputs.link_samples) || '' }}
             Скрины и отчёты см. в артефакте **vibe-check-artifacts**.
 
       - name: Evaluate gates
         run: |
           [ "${{ steps.visual.outputs.status }}" = "ok" ]
+          [ "${{ steps.visual.outputs.asset_failures }}" = "0" ]
+          [ "${{ steps.visual.outputs.link_failures }}" = "0" ]
