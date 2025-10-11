@@ -232,7 +232,14 @@ jobs:
         id: htmlhint
         continue-on-error: true
         run: |
-          npx htmlhint "index.html" --config .htmlhintrc
+          set -o pipefail
+          mapfile -d '' files < <(find . -type f -name '*.html' ! -path './node_modules/*' -print0)
+          if [ ${#files[@]} -eq 0 ]; then
+            echo "No HTML files found for HTMLHint."
+            exit 0
+          fi
+          npx htmlhint --config .htmlhintrc "${files[@]}" | tee vibe-check/htmlhint.log
+          exit ${PIPESTATUS[0]}
 
       - name: Linkinator
         id: linkinator
