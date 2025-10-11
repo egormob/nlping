@@ -607,12 +607,12 @@
 {"type": "document", "document": "ark.ru/ins/zapoved/zapoved/belyaev2/9.html", "path": "/ark.ru/ins/zapoved/zapoved/belyaev2/9.html", "url": "/ark.ru/ins/zapoved/zapoved/belyaev2/9.html", "issues": []}
 {"type": "document", "document": "ask46c6.html", "path": "/ask46c6.html", "url": "/ask46c6.html", "issues": []}
 {"type": "asset", "document": "ask46c6.html", "category": "images", "original_url": "rndnumb125.gif?checker=299098", "path": "/rndnumb125.gif", "url": "/rndnumb125.gif", "status": "ok"}
-{"type": "document", "document": "blog&page=2.html", "path": "/blog&page=2.html", "url": "/blog&page=2.html", "issues": []}
-{"type": "document", "document": "blog&page=3.html", "path": "/blog&page=3.html", "url": "/blog&page=3.html", "issues": []}
-{"type": "document", "document": "blog&page=4.html", "path": "/blog&page=4.html", "url": "/blog&page=4.html", "issues": []}
-{"type": "document", "document": "blog&page=5.html", "path": "/blog&page=5.html", "url": "/blog&page=5.html", "issues": []}
-{"type": "document", "document": "blog&page=6.html", "path": "/blog&page=6.html", "url": "/blog&page=6.html", "issues": []}
-{"type": "document", "document": "blog&page=7.html", "path": "/blog&page=7.html", "url": "/blog&page=7.html", "issues": []}
+{"type": "document", "document": "blog&page=2.html", "path": "/blog?page=2", "url": "/blog?page=2", "issues": []}
+{"type": "document", "document": "blog&page=3.html", "path": "/blog?page=3", "url": "/blog?page=3", "issues": []}
+{"type": "document", "document": "blog&page=4.html", "path": "/blog?page=4", "url": "/blog?page=4", "issues": []}
+{"type": "document", "document": "blog&page=5.html", "path": "/blog?page=5", "url": "/blog?page=5", "issues": []}
+{"type": "document", "document": "blog&page=6.html", "path": "/blog?page=6", "url": "/blog?page=6", "issues": []}
+{"type": "document", "document": "blog&page=7.html", "path": "/blog?page=7", "url": "/blog?page=7", "issues": []}
 {"type": "document", "document": "blondy_strategy.html", "path": "/blondy_strategy.html", "url": "/blondy_strategy.html", "issues": []}
 {"type": "document", "document": "coaching.html", "path": "/coaching.html", "url": "/coaching.html", "issues": []}
 {"type": "asset", "document": "coaching.html", "category": "images", "original_url": "img/aVuQG_R6WoA.jpg", "path": "/img/aVuQG_R6WoA.jpg", "url": "/img/aVuQG_R6WoA.jpg", "status": "ok"}
