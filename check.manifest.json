@@ -1,0 +1,35 @@
+{
+  "routes": [
+    {
+      "label": "home",
+      "path": "/",
+      "assertions": [
+        {
+          "type": "textIncludes",
+          "selector": "title",
+          "value": "НЛП для руководителей"
+        },
+        {
+          "type": "exists",
+          "selector": "#logo img"
+        }
+      ]
+    },
+    {
+      "label": "nlping",
+      "path": "/nlping",
+      "fallback": "/",
+      "assertions": [
+        {
+          "type": "exists",
+          "selector": "body"
+        },
+        {
+          "type": "textIncludes",
+          "selector": "title",
+          "value": "НЛП для руководителей"
+        }
+      ]
+    }
+  ]
+}

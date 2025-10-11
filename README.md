@@ -58,3 +58,12 @@ pytest tools/tests/test_reencode.py
    attach the relevant log files in the description.
 4. Before pushing, ensure there are no stray HTTrack folders (`hts-cache/`)
    or macOS metadata files (`.DS_Store`). They are not needed in git.
+
+## Vibe check readiness criteria
+
+Automation is considered green when the following conditions are met:
+
+- **Visual:** every assertion defined in `check.manifest.json` passes.
+- **Links:** Linkinator reports zero broken links.
+- **Perf:** when the optional Lighthouse run is enabled, the performance
+  score stays at or above 80/100 (adjustable per project needs).
