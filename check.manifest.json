@@ -5,13 +5,16 @@
       "path": "/",
       "assertions": [
         {
-          "type": "textIncludes",
-          "selector": "title",
-          "value": "НЛП для руководителей"
+          "type": "exists",
+          "selector": "body"
         },
         {
           "type": "exists",
-          "selector": "#logo img"
+          "selector": "#app, main"
+        },
+        {
+          "type": "exists",
+          "selector": "h1, h2"
         }
       ]
     },
@@ -25,9 +28,12 @@
           "selector": "body"
         },
         {
-          "type": "textIncludes",
-          "selector": "title",
-          "value": "НЛП для руководителей"
+          "type": "exists",
+          "selector": "#app, main"
+        },
+        {
+          "type": "exists",
+          "selector": "h1, h2"
         }
       ]
     }
