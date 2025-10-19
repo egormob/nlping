@@ -32,11 +32,22 @@ WINDOWS_1251_HINTS = (
     b"encoding='windows-1251'",
 )
 
+MOJIBAKE_CHAR_CODES = {0xA8, 0xB8} | set(range(0xC0, 0x100))
+
+
 def _looks_like_mojibake(text: str) -> bool:
     """Return ``True`` when the decoded payload resembles mojibake."""
 
-    suspicious = sum(1 for char in text if ord(char) >= 0xC0)
-    return suspicious >= 3
+    run = 0
+    for char in text:
+        code = ord(char)
+        if code <= 0xFF and code in MOJIBAKE_CHAR_CODES:
+            run += 1
+            if run >= 3:
+                return True
+        else:
+            run = 0
+    return False
 
 
 def _count_cyrillic(text: str) -> int:

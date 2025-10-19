@@ -114,6 +114,28 @@ def test_reencode_skips_utf8(tmp_path: Path) -> None:
     assert entry["original_hash"] == entry["new_hash"]
 
 
+def test_reencode_does_not_misdetect_latin_text(tmp_path: Path) -> None:
+    payload = "<html><body>Résumé déjà vu – café</body></html>"
+    source = tmp_path / "page.html"
+    source.write_text(payload, "utf-8")
+
+    log_dir = tmp_path / "logs"
+    exit_code = reencode.main([
+        "--paths",
+        str(source),
+        "--log-dir",
+        str(log_dir),
+    ])
+
+    assert exit_code == 0
+    assert source.read_text("utf-8") == payload
+
+    log = read_json(get_log_path(log_dir))
+    entry = log["files"][0]
+    assert entry["status"] == "skipped"
+    assert entry["original_encoding"] == "utf-8"
+
+
 def test_reencode_reports_detection_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     source = tmp_path / "page.html"
     source.write_bytes(b"garbage\xff\xfe\xfd")
