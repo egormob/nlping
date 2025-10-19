@@ -32,6 +32,27 @@ WINDOWS_1251_HINTS = (
     b"encoding='windows-1251'",
 )
 
+MOJIBAKE_CHAR_CODES = {0xA8, 0xB8} | set(range(0xC0, 0x100))
+
+
+def _looks_like_mojibake(text: str) -> bool:
+    """Return ``True`` when the decoded payload resembles mojibake."""
+
+    run = 0
+    for char in text:
+        code = ord(char)
+        if code <= 0xFF and code in MOJIBAKE_CHAR_CODES:
+            run += 1
+            if run >= 3:
+                return True
+        else:
+            run = 0
+    return False
+
+
+def _count_cyrillic(text: str) -> int:
+    return sum(1 for char in text if "\u0400" <= char <= "\u04ff")
+
 
 @dataclass
 class FileReport:
@@ -118,12 +139,14 @@ def _maybe_decode_double_encoded(payload: bytes) -> Optional[str]:
     """
 
     lowered = payload.lower()
-    if not any(hint in lowered for hint in WINDOWS_1251_HINTS):
-        return None
+    has_hint = any(hint in lowered for hint in WINDOWS_1251_HINTS)
 
     try:
         text = payload.decode("utf-8")
     except UnicodeDecodeError:
+        return None
+
+    if not has_hint and not _looks_like_mojibake(text):
         return None
 
     try:
@@ -157,7 +180,7 @@ def _maybe_decode_double_encoded(payload: bytes) -> Optional[str]:
         except UnicodeDecodeError:
             return None
 
-    if not any("\u0400" <= char <= "\u04ff" for char in recovered):
+    if _count_cyrillic(recovered) < 3:
         return None
 
     return recovered

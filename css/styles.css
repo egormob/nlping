@@ -777,6 +777,10 @@ a:hover {
     color: #0099ff;
 }
 
+.bottom-block {
+    clear: both;
+}
+
 .bottom-block .header-link-all {
     float:left;
     margin-left: 15px;
